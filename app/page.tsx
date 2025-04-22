@@ -77,7 +77,7 @@ export default function Home() {
             src="/images/Lightning.svg"
             alt="Lightning background"
             fill
-            className="object-cover object-right -z-10 hidden md:block"
+            className="object-cover object-right -z-10 md:block"
             quality={100}
             priority
           />
@@ -89,7 +89,7 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.6 }}
             className="my-8 md:my-12 flex justify-center"
           >
-            <div className="relative w-full max-w-[350px] sm:max-w-[450px] md:w-[575px] h-[200px] sm:h-[250px] md:h-[325px] bg-black rounded-xl overflow-hidden border border-[#FFFFE3]">
+            <div className="relative w-full max-w-[350px] sm:max-w-[450px] md:w-[575px] h-[200px] sm:h-[250px] md:h-[290px] bg-black rounded-xl overflow-hidden border border-[#FFFFE3]">
               <div className="absolute top-4 left-4 md:top-6 md:left-6">
                 <Image
                   src="/images/CavosLogo.png"
