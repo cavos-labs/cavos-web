@@ -64,8 +64,8 @@ export default function Home() {
             <p className="text-base md:text-lg mb-4 md:mb-6">
               Invest stable coins on the cheapest and fastest chain.
             </p>
-            <button 
-              onClick={scrollToWaitlist} 
+            <button
+              onClick={scrollToWaitlist}
               className="border border-[#FFFFE3] px-4 py-1 md:px-6 md:py-2 hover:bg-[#FFFFE3] hover:text-[#11110E] transition-colors duration-500 cursor-pointer text-sm md:text-base"
             >
               Join Waitlist
@@ -201,9 +201,8 @@ export default function Home() {
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 disabled={submitted || loading}
-                className={`bg-[#FFFFE3] text-[#11110E] px-4 py-1 md:px-6 md:py-2 font-medium cursor-pointer text-sm md:text-base ${
-                  (submitted || loading) ? 'opacity-70' : ''
-                }`}
+                className={`bg-[#FFFFE3] text-[#11110E] px-4 py-1 md:px-6 md:py-2 font-medium cursor-pointer text-sm md:text-base ${(submitted || loading) ? 'opacity-70' : ''
+                  }`}
                 type="submit"
               >
                 {loading ? "Loading..." : submitted ? "Thanks!" : "Join Now"}
@@ -220,14 +219,39 @@ export default function Home() {
 
       <footer className="container mx-auto px-4 py-6 md:py-8 border-t border-[#FFFFE3]/20">
         <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="mb-3 md:mb-0">
+          <div className="mb-3 md:mb-0 flex items-center space-x-4">
             <Image
               src="/images/CavosLogo.png"
               alt="Cavos Logo"
               width={35}
-              height={35}
-              className="md:w-10 md:h-10"
+              height={45}
+              className="md:w-10 md:h-12"
             />
+
+            {/* Discord Link with Animation */}
+            <motion.a
+              href="https://discord.gg/RKNxhpczfw"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                duration: 0.5,
+                type: "spring",
+                stiffness: 200
+              }}
+              className="flex items-center"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+                className="fill-[#FFFFE3] hover:fill-white transition-colors duration-300"
+              >
+                <path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 00-.079.036c-.21.39-.444.885-.608 1.28a18.566 18.566 0 00-5.487 0 12.36 12.36 0 00-.617-1.28.077.077 0 00-.079-.036A19.798 19.798 0 003.677 4.492a.07.07 0 00-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 00.031.055 20.03 20.03 0 005.993 2.98.078.078 0 00.084-.026c.462-.62.874-1.275 1.226-1.963.021-.04.001-.088-.041-.104a13.201 13.201 0 01-1.872-.878.075.075 0 01-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 01.078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 01.079.009c.12.098.245.195.372.288a.075.075 0 01-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 00-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 00.084.028 19.963 19.963 0 006.002-2.981.076.076 0 00.032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 00-.031-.028zM8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38 0-1.312.956-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.956 2.38-2.157 2.38zm7.975 0c-1.183 0-2.157-1.069-2.157-2.38 0-1.312.955-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.946 2.38-2.157 2.38z" />
+              </svg>
+            </motion.a>
           </div>
           <p className="text-xs md:text-sm opacity-70">© 2025 Cavos. All rights reserved.</p>
         </div>
