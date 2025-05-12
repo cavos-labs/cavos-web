@@ -9,6 +9,72 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      transaction: {
+        Row: {
+          amount: number
+          created_at: string
+          id: number
+          tx_hash: string | null
+          type: string
+          uid: string
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          id?: number
+          tx_hash?: string | null
+          type: string
+          uid: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: number
+          tx_hash?: string | null
+          type?: string
+          uid?: string
+        }
+        Relationships: []
+      }
+      user_wallet: {
+        Row: {
+          address: string
+          created_at: string
+          id: number
+          phone: string | null
+          pin: string
+          private_key: string
+          public_key: string
+          uid: string
+          updated_at: string
+          user_name: string | null
+        }
+        Insert: {
+          address: string
+          created_at?: string
+          id?: number
+          phone?: string | null
+          pin: string
+          private_key: string
+          public_key: string
+          uid: string
+          updated_at?: string
+          user_name?: string | null
+        }
+        Update: {
+          address?: string
+          created_at?: string
+          id?: number
+          phone?: string | null
+          pin?: string
+          private_key?: string
+          public_key?: string
+          uid?: string
+          updated_at?: string
+          user_name?: string | null
+        }
+        Relationships: []
+      }
       waitlist: {
         Row: {
           created_at: string

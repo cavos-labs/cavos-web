@@ -5,9 +5,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import LoginModal from '../modals/Login';
+import { LoginButton, UserDropdown } from './UserProfleButton';
+import { useAtom } from 'jotai';
+import { useUserWallet } from '../lib/atoms/userWallet';
 
 function Header() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [userWallet] = useAtom(useUserWallet);
 
   return (
     <>
@@ -64,14 +68,13 @@ function Header() {
             </nav>
 
             {/* Login Button */}
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsLoginOpen(true)}
-              className="border border-[#FFFFE3] px-4 py-1 hover:bg-[#FFFFE3] hover:text-[#11110E] transition-colors duration-500 cursor-pointer text-sm md:text-base"
-            >
-              Login
-            </motion.button>
+            <div className="mt-4">
+              {userWallet ? (
+                <UserDropdown />
+              ) : (
+                <LoginButton onClick={()=>setIsLoginOpen(true)} />
+              )}
+            </div>
           </div>
         </div>
       </header>
