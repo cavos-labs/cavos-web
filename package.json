@@ -1,32 +1,33 @@
 {
-  "name": "cavos-web",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@heroicons/react": "^2.2.0",
-    "@supabase/supabase-js": "^2.49.4",
-    "axios": "^1.8.4",
-    "framer-motion": "^12.11.0",
-    "jotai": "^2.12.4",
-    "lucide-react": "^0.503.0",
-    "next": "15.3.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-icons": "^5.5.0",
-    "supabase": "^2.22.4"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  }
+	"name": "cavos-web",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\" & next dev --turbopack",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint"
+	},
+	"dependencies": {
+		"@heroicons/react": "^2.2.0",
+		"@supabase/supabase-js": "^2.49.4",
+		"axios": "^1.8.4",
+		"framer-motion": "^12.11.0",
+		"jotai": "^2.12.4",
+		"lucide-react": "^0.503.0",
+		"next": "15.3.1",
+		"prettier": "^3.5.3",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0",
+		"react-icons": "^5.5.0",
+		"supabase": "^2.22.4"
+	},
+	"devDependencies": {
+		"@tailwindcss/postcss": "^4",
+		"@types/node": "^20",
+		"@types/react": "^19",
+		"@types/react-dom": "^19",
+		"tailwindcss": "^4",
+		"typescript": "^5"
+	}
 }
