@@ -4,15 +4,50 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { useUserWallet } from '../lib/atoms/userWallet';
+import { useAtomValue } from 'jotai';
+import { FiLogIn } from 'react-icons/fi';
 
 export default function Investments() {
 	const [showClaimSuccess, setShowClaimSuccess] = useState(false);
+	const wallet = useAtomValue(useUserWallet);
 
 	const handleClaimRewards = () => {
 		setShowClaimSuccess(true);
 		setTimeout(() => setShowClaimSuccess(false), 3000);
 	};
 
+	// NOT LOGGED USER
+	if (!wallet) {
+		return (
+			<div className="min-h-screen text-white bg-[#11110E] flex flex-col">
+				<Header />
+
+				<main className="flex-grow flex items-center justify-center">
+					<motion.div
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.5 }}
+						className="text-center p-8 bg-[#1A1916]/50 rounded-xl max-w-md mx-4"
+					>
+						<div className="flex justify-center mb-6">
+							<FiLogIn size={48} color="#FFFFE3" />
+						</div>
+						<h2 className="text-2xl font-bold text-[#FFFFE3] mb-4">
+							Login Required
+						</h2>
+						<p className="text-[#FFFFE3]/70 mb-6">
+							You need to log in to access your deposit address.
+						</p>
+					</motion.div>
+				</main>
+
+				<Footer />
+			</div>
+		);
+	}
+
+	// LOGGED USER
 	return (
 		<div className="min-h-screen bg-[#11110E] text-white flex flex-col">
 			<Header />

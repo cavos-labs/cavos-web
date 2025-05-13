@@ -7,10 +7,11 @@ import { useAtomValue } from 'jotai';
 import { FiCopy, FiAlertTriangle, FiLogIn } from 'react-icons/fi';
 import { useUserWallet } from '../lib/atoms/userWallet';
 
-export default function BuyPage() {
+export default function Buy() {
 	const wallet = useAtomValue(useUserWallet);
 	const [copied, setCopied] = useState(false);
 
+	// NOT LOGGED USER
 	if (!wallet) {
 		return (
 			<div className="min-h-screen text-white bg-[#11110E] flex flex-col">
@@ -63,6 +64,7 @@ export default function BuyPage() {
 		setTimeout(() => setCopied(false), 2000);
 	};
 
+	// LOGGED USER
 	return (
 		<div className="min-h-screen text-white bg-[#11110E]">
 			<Header />
@@ -147,7 +149,7 @@ export default function BuyPage() {
 									/>
 								</div>
 								<p className="text-[#FFFFE3] text-sm leading-relaxed">
-									Supported assets: USDC, USDT.
+									Supported assets: USDC
 								</p>
 							</motion.div>
 
