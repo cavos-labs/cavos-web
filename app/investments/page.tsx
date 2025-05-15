@@ -37,7 +37,7 @@ export default function Investments() {
 							Login Required
 						</h2>
 						<p className="text-[#FFFFE3]/70 mb-6">
-							You need to log in to access your deposit address.
+							You need to log in to access your investments.
 						</p>
 					</motion.div>
 				</main>
