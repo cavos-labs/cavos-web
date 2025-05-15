@@ -5,11 +5,13 @@ import { useRouter } from 'next/navigation';
 import { FiArrowLeft, FiAlertTriangle } from 'react-icons/fi';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+
 import { useAtomValue } from 'jotai';
 import { useUserWallet } from '../lib/atoms/userWallet';
 import { getWalletBalance } from '../lib/utils';
 import axios from 'axios';
 import { supabase } from '../lib/supabase';
+import AlertModal from '../modals/AlertModal';
 
 export default function Send() {
 	const router = useRouter();
@@ -18,6 +20,16 @@ export default function Send() {
 	const [recipientAddress, setRecipientAddress] = useState('');
 	const [balance, setBalance] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [modalProps, setModalProps] = useState({
+		title: '',
+		message: '',
+		type: 'info',
+		confirmText: 'OK',
+		cancelText: 'Cancel',
+		onConfirm: () => {},
+		showCancel: false,
+	});
 
 	useEffect(() => {
 		async function getAccountInfo() {
@@ -54,95 +66,147 @@ export default function Send() {
 		setAmount(balance.toString());
 	};
 
+	const showModal = (
+		title: string,
+		message: string,
+		type = 'info',
+		confirmText = 'OK',
+		onConfirm = () => {},
+		showCancel = false,
+		cancelText = 'Cancel'
+	) => {
+		setModalProps({
+			title,
+			message,
+			type,
+			confirmText,
+			cancelText,
+			onConfirm,
+			showCancel,
+		});
+		setIsModalOpen(true);
+	};
+
 	const handleSend = async () => {
 		if (!amount || parseFloat(amount) <= 0) {
-			alert('Please enter a valid amount');
+			showModal('Invalid Amount', 'Please enter a valid amount', 'error');
 			return;
 		}
 
 		if (parseFloat(amount) > balance) {
-			alert("You don't have enough funds for this transfer");
+			showModal(
+				'Insufficient Funds',
+				"You don't have enough funds for this transfer",
+				'error'
+			);
 			return;
 		}
 
 		if (!recipientAddress) {
-			alert('Please enter a recipient address');
+			showModal(
+				'Missing Address',
+				'Please enter a recipient address',
+				'error'
+			);
 			return;
 		}
 
 		if (!validateStarknetAddress(recipientAddress)) {
-			alert('Please enter a valid Starknet wallet address');
+			showModal(
+				'Invalid Address',
+				'Please enter a valid Starknet wallet address',
+				'error'
+			);
 			return;
 		}
 
-		if (
-			confirm(
-				`Send $${amount} to ${recipientAddress.substring(0, 6)}...${recipientAddress.substring(recipientAddress.length - 4)}?`
-			)
-		) {
-			setIsLoading(true);
-			try {
-				if (wallet) {
-					const response = await axios.post(
-						process.env.NEXT_PUBLIC_WALLET_PROVIDER_API +
-							'wallet/send',
-						{
-							amount: amount,
-							address: wallet.address,
-							hashedPk: wallet.private_key,
-							hashedPin: wallet.pin,
-							receiverAddress: recipientAddress,
-						},
-						{
-							headers: {
-								'Content-Type': 'application/json',
-								Authorization: `Bearer ${process.env.NEXT_PUBLIC_WALLET_PROVIDER_TOKEN}`,
-							},
-						}
-					);
-
-					if (!response.data.result) {
-						throw new Error('Transaction failed');
-					}
-
-					const txHash = response.data.result;
-
-					const { error: txError } = await supabase
-						.from('transaction')
-						.insert([
+		showModal(
+			'Confirm Transaction',
+			`Send $${amount} to ${recipientAddress.substring(0, 6)}...${recipientAddress.substring(recipientAddress.length - 4)}?`,
+			'confirm',
+			'Send',
+			async () => {
+				setIsLoading(true);
+				try {
+					if (wallet) {
+						const response = await axios.post(
+							process.env.NEXT_PUBLIC_WALLET_PROVIDER_API +
+								'wallet/send',
 							{
-								uid: wallet.uid,
-								type: 'Send',
-								amount: Number(amount),
-								tx_hash: txHash,
+								amount: amount,
+								address: wallet.address,
+								hashedPk: wallet.private_key,
+								hashedPin: wallet.pin,
+								receiverAddress: recipientAddress,
 							},
-						]);
+							{
+								headers: {
+									'Content-Type': 'application/json',
+									Authorization: `Bearer ${process.env.NEXT_PUBLIC_WALLET_PROVIDER_TOKEN}`,
+								},
+							}
+						);
 
-					if (txError) {
-						console.error('Insert error:', txError);
-						alert('Error saving transaction to database');
+						if (!response.data.result) {
+							throw new Error('Transaction failed');
+						}
+
+						const txHash = response.data.result;
+
+						const { error: txError } = await supabase
+							.from('transaction')
+							.insert([
+								{
+									uid: wallet.uid,
+									type: 'Send',
+									amount: Number(amount),
+									tx_hash: txHash,
+								},
+							]);
+
+						if (txError) {
+							console.error('Insert error:', txError);
+							setIsLoading(false);
+							showModal(
+								'Database Error',
+								'Error saving transaction to database',
+								'error'
+							);
+							return;
+						}
+
 						setIsLoading(false);
-						return;
+						showModal(
+							'Transaction Successful',
+							`You've sent $${amount} to ${recipientAddress.substring(0, 6)}...${recipientAddress.substring(recipientAddress.length - 4)}`,
+							'success',
+							'Go to Dashboard',
+							() => {
+								setAmount('');
+								setRecipientAddress('');
+								router.push('/dashboard');
+							}
+						);
+					} else {
+						showModal(
+							'Authentication Error',
+							'Please login to send money.',
+							'error'
+						);
 					}
-
+				} catch (error) {
+					console.error('Send error:', error);
 					setIsLoading(false);
-					alert(
-						`You've sent $${amount} to ${recipientAddress.substring(0, 6)}...${recipientAddress.substring(recipientAddress.length - 4)}`
+					showModal(
+						'Transaction Failed',
+						'An error occurred while sending funds. Please try again.',
+						'error'
 					);
-					setAmount('');
-					setRecipientAddress('');
-					router.push('/dashboard');
-				} else {
-					alert(`Please login to send money.`);
 				}
-			} catch (error) {
-				console.error('Send error:', error);
-				setIsLoading(false);
-				alert(
-					'An error occurred while sending funds. Please try again.'
-				);
-			}
-		}
+			},
+			true,
+			'Cancel'
+		);
 	};
 
 	// NOT LOGGED USER
@@ -335,6 +399,13 @@ export default function Send() {
 					</div>
 				</div>
 			)}
+
+			<AlertModal
+				isOpen={isModalOpen}
+				onClose={() => setIsModalOpen(false)}
+				{...modalProps}
+			/>
+
 			<Footer />
 		</div>
 	);
