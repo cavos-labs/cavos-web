@@ -31,7 +31,7 @@ export default function Dashboard() {
 							Login Required
 						</h2>
 						<p className="text-[#FFFFE3]/70 mb-6">
-							You need to log in to access your deposit address.
+							You need to log in to access your dashboard.
 						</p>
 					</motion.div>
 				</main>
@@ -126,27 +126,29 @@ export default function Dashboard() {
 							Buy
 						</motion.button>
 					</Link>
-					<motion.button
-						whileHover={{ scale: 1.05 }}
-						whileTap={{ scale: 0.95 }}
-						className="border-2 border-[#FFFFE3] px-8 py-3  hover:bg-[#FFFFE3] hover:text-[#11110E] transition-all duration-300 font-medium flex items-center gap-2"
-					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="20"
-							height="20"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							strokeWidth="2"
-							strokeLinecap="round"
-							strokeLinejoin="round"
+					<Link href="/send">
+						<motion.button
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+							className="border-2 border-[#FFFFE3] px-8 py-3  hover:bg-[#FFFFE3] hover:text-[#11110E] transition-all duration-300 font-medium flex items-center gap-2"
 						>
-							<line x1="12" y1="5" x2="12" y2="19"></line>
-							<polyline points="19 12 12 19 5 12"></polyline>
-						</svg>
-						Send
-					</motion.button>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="20"
+								height="20"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth="2"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+							>
+								<line x1="12" y1="5" x2="12" y2="19"></line>
+								<polyline points="19 12 12 19 5 12"></polyline>
+							</svg>
+							Send
+						</motion.button>
+					</Link>
 					<motion.button
 						whileHover={{ scale: 1.05 }}
 						whileTap={{ scale: 0.95 }}
