@@ -19,26 +19,28 @@ export default function AlertModal({
 	cancelText = 'Cancel',
 	onConfirm,
 	showCancel = false,
+	isLoading = false,
 }: AlertModalProps) {
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		const handleEscape = (e: KeyboardEvent) => {
-			if (e.key === 'Escape' && isOpen) {
+			if (e.key === 'Escape' && isOpen && !isLoading) {
 				onClose();
 			}
 		};
 
 		window.addEventListener('keydown', handleEscape);
 		return () => window.removeEventListener('keydown', handleEscape);
-	}, [isOpen, onClose]);
+	}, [isOpen, onClose, isLoading]);
 
 	useEffect(() => {
 		const handleClickOutside = (e: MouseEvent) => {
 			if (
 				modalRef.current &&
 				!modalRef.current.contains(e.target as Node) &&
-				isOpen
+				isOpen &&
+				!isLoading
 			) {
 				onClose();
 			}
@@ -47,7 +49,7 @@ export default function AlertModal({
 		document.addEventListener('mousedown', handleClickOutside);
 		return () =>
 			document.removeEventListener('mousedown', handleClickOutside);
-	}, [isOpen, onClose]);
+	}, [isOpen, onClose, isLoading]);
 
 	useEffect(() => {
 		if (isOpen) {
@@ -103,37 +105,48 @@ export default function AlertModal({
 									{title}
 								</h3>
 							</div>
-							<button
-								onClick={onClose}
-								className="text-[#555] hover:text-[#FFFFE3] transition-colors"
-							>
-								<FiX size={24} />
-							</button>
+							{!isLoading && (
+								<button
+									onClick={onClose}
+									className="text-[#555] hover:text-[#FFFFE3] transition-colors"
+								>
+									<FiX size={24} />
+								</button>
+							)}
 						</div>
 
 						<div className="p-6">
 							<p className="text-[#FFFFE3]/80 mb-6">{message}</p>
 
-							<div className="flex justify-end space-x-3">
-								{showCancel && (
-									<button
-										onClick={onClose}
-										className="px-4 py-2 border border-[#333] rounded text-[#FFFFE3]/70 hover:bg-[#333] transition-colors"
-									>
-										{cancelText}
-									</button>
-								)}
+							{isLoading ? (
+								<div className="flex flex-col items-center justify-center">
+									<div className="w-12 h-12 border-4 border-[#FFFFE3]/20 border-t-[#FFFFE3] rounded-full animate-spin mb-4"></div>
+									<p className="text-[#FFFFE3]/80 text-center">
+										Processing transaction...
+									</p>
+								</div>
+							) : (
+								<div className="flex justify-end space-x-3">
+									{showCancel && (
+										<button
+											onClick={onClose}
+											className="px-4 py-2 border border-[#333] rounded text-[#FFFFE3]/70 hover:bg-[#333] transition-colors"
+										>
+											{cancelText}
+										</button>
+									)}
 
-								<button
-									onClick={() => {
-										onConfirm();
-										if (!showCancel) onClose();
-									}}
-									className="px-4 py-2 bg-[#FFFFE3] text-[#11110E] rounded hover:bg-[#FFFFB3] transition-colors"
-								>
-									{confirmText}
-								</button>
-							</div>
+									<button
+										onClick={() => {
+											onConfirm();
+											if (!showCancel) onClose();
+										}}
+										className="px-4 py-2 bg-[#FFFFE3] text-[#11110E] rounded hover:bg-[#FFFFB3] transition-colors"
+									>
+										{confirmText}
+									</button>
+								</div>
+							)}
 						</div>
 					</motion.div>
 				</div>

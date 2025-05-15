@@ -8,4 +8,5 @@ export interface AlertModalProps {
 	cancelText: string;
 	onConfirm: () => void;
 	showCancel: boolean;
+	isLoading?: boolean;
 }

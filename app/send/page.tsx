@@ -29,6 +29,7 @@ export default function Send() {
 		cancelText: 'Cancel',
 		onConfirm: () => {},
 		showCancel: false,
+		isLoading: false,
 	});
 
 	useEffect(() => {
@@ -73,7 +74,8 @@ export default function Send() {
 		confirmText = 'OK',
 		onConfirm = () => {},
 		showCancel = false,
-		cancelText = 'Cancel'
+		cancelText = 'Cancel',
+		isModalLoading = false
 	) => {
 		setModalProps({
 			title,
@@ -83,6 +85,7 @@ export default function Send() {
 			cancelText,
 			onConfirm,
 			showCancel,
+			isLoading: isModalLoading,
 		});
 		setIsModalOpen(true);
 	};
@@ -126,7 +129,14 @@ export default function Send() {
 			'confirm',
 			'Send',
 			async () => {
-				setIsLoading(true);
+				setModalProps((prev) => ({
+					...prev,
+					title: 'Processing Transaction',
+					message: 'Please wait while we process your transaction...',
+					isLoading: true,
+					showCancel: false,
+				}));
+
 				try {
 					if (wallet) {
 						const response = await axios.post(
@@ -166,42 +176,48 @@ export default function Send() {
 
 						if (txError) {
 							console.error('Insert error:', txError);
-							setIsLoading(false);
-							showModal(
-								'Database Error',
-								'Error saving transaction to database',
-								'error'
-							);
+							setModalProps((prev) => ({
+								...prev,
+								title: 'Database Error',
+								message: 'Error saving transaction to database',
+								type: 'error',
+								isLoading: false,
+							}));
 							return;
 						}
-
-						setIsLoading(false);
-						showModal(
-							'Transaction Successful',
-							`You've sent $${amount} to ${recipientAddress.substring(0, 6)}...${recipientAddress.substring(recipientAddress.length - 4)}`,
-							'success',
-							'Go to Dashboard',
-							() => {
+						setModalProps((prev) => ({
+							...prev,
+							title: 'Transaction Successful',
+							message: `You've sent $${amount} to ${recipientAddress.substring(0, 6)}...${recipientAddress.substring(recipientAddress.length - 4)}`,
+							type: 'success',
+							confirmText: 'Go to Dashboard',
+							isLoading: false,
+							onConfirm: () => {
 								setAmount('');
 								setRecipientAddress('');
+								setIsModalOpen(false);
 								router.push('/dashboard');
-							}
-						);
+							},
+						}));
 					} else {
-						showModal(
-							'Authentication Error',
-							'Please login to send money.',
-							'error'
-						);
+						setModalProps((prev) => ({
+							...prev,
+							title: 'Authentication Error',
+							message: 'Please login to send money.',
+							type: 'error',
+							isLoading: false,
+						}));
 					}
 				} catch (error) {
 					console.error('Send error:', error);
-					setIsLoading(false);
-					showModal(
-						'Transaction Failed',
-						'An error occurred while sending funds. Please try again.',
-						'error'
-					);
+					setModalProps((prev) => ({
+						...prev,
+						title: 'Transaction Failed',
+						message:
+							'An error occurred while sending funds. Please try again.',
+						type: 'error',
+						isLoading: false,
+					}));
 				}
 			},
 			true,
@@ -363,14 +379,16 @@ export default function Send() {
 						!amount ||
 						parseFloat(amount) <= 0 ||
 						!recipientAddress ||
-						isLoading
+						isLoading ||
+						modalProps.isLoading
 					}
 					onClick={handleSend}
 					className={`w-full py-4 text-center rounded-sm mb-6 transition-colors ${
 						!amount ||
 						parseFloat(amount) <= 0 ||
 						!recipientAddress ||
-						isLoading
+						isLoading ||
+						modalProps.isLoading
 							? 'bg-[#333] text-[#666] cursor-not-allowed'
 							: 'bg-[#FFFFE3] text-[#11110E] hover:bg-[#FFFFB3]'
 					}`}
@@ -389,20 +407,13 @@ export default function Send() {
 				</motion.p>
 			</main>
 
-			{isLoading && (
-				<div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-					<div className="bg-[#1A1916] p-6 rounded-lg text-center">
-						<div className="w-12 h-12 border-4 border-[#FFFFE3]/20 border-t-[#FFFFE3] rounded-full animate-spin mx-auto mb-4"></div>
-						<p className="text-[#FFFFE3]">
-							Processing transaction...
-						</p>
-					</div>
-				</div>
-			)}
-
 			<AlertModal
 				isOpen={isModalOpen}
-				onClose={() => setIsModalOpen(false)}
+				onClose={() => {
+					if (!modalProps.isLoading) {
+						setIsModalOpen(false);
+					}
+				}}
 				{...modalProps}
 			/>
 
