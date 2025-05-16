@@ -104,7 +104,7 @@ export default function Dashboard() {
 								YOUR BALANCE
 							</p>
 							<p className="text-3xl font-mono font-bold text-[#FFFFE3]">
-								${isLoading ? '...' : balance} USD
+								${isLoading ? '...' : balance.toFixed(2)} USD
 							</p>
 							<div className="flex items-center gap-2 mt-4">
 								<span className="w-3 h-3 rounded-full bg-green-400 animate-pulse"></span>
