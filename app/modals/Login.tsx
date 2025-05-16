@@ -7,6 +7,7 @@ import { useUserWallet } from '../lib/atoms/userWallet';
 import { useAtom, useSetAtom } from 'jotai';
 import axios from 'axios';
 import { ChevronDown, LogOut } from 'lucide-react';
+import { useUserId } from '../lib/atoms/userId';
 
 export default function LoginModal({
 	isOpen,
@@ -23,6 +24,7 @@ export default function LoginModal({
 	const [userId, setUserId] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
 	const setUserWallet = useSetAtom(useUserWallet);
+	const setGlobalUserId = useSetAtom(useUserId);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 
 	const handleUsernameSubmit = async (e: React.FormEvent) => {
@@ -43,6 +45,7 @@ export default function LoginModal({
 			) {
 				setPhoneNumber(phoneData[0].phone);
 				setUserId(phoneData[0].uid);
+				setGlobalUserId(phoneData[0].uid);
 				const { error: otpError } = await supabase.auth.signInWithOtp({
 					phone: phoneData[0].phone,
 				});
