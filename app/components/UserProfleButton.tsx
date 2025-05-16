@@ -4,9 +4,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useUserWallet } from '../lib/atoms/userWallet';
 import { useAtom } from 'jotai';
 import { ChevronDown, LogOut, Copy, Check } from 'lucide-react';
+import { useUserId } from '../lib/atoms/userId';
 
 export function UserDropdown() {
 	const [userWallet, setUserWallet] = useAtom(useUserWallet);
+	const [userId, setUserId] = useAtom(useUserId);
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 	const [copied, setCopied] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
@@ -31,6 +33,7 @@ export function UserDropdown() {
 		// Aquí iría tu lógica de logout con Supabase
 		setUserWallet(null);
 		setIsDropdownOpen(false);
+		setUserId(null);
 	};
 
 	const copyToClipboard = () => {
