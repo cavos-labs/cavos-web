@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../components/Header';
@@ -7,10 +7,50 @@ import Footer from '../components/Footer';
 import { useUserWallet } from '../lib/atoms/userWallet';
 import { useAtomValue } from 'jotai';
 import { FiLogIn } from 'react-icons/fi';
+import axios from 'axios';
 
 export default function Investments() {
 	const [showClaimSuccess, setShowClaimSuccess] = useState(false);
 	const wallet = useAtomValue(useUserWallet);
+	const [totalInvested, setTotalInvested] = useState(0);
+	const [apy, setApy] = useState(0);
+	const [isLoading, setIsLoading] = useState(false);
+
+	useEffect(() => {
+		async function getAccountInfo() {
+			try {
+				if (wallet) {
+					setIsLoading(true);
+					const positionResponse = await axios.post(
+						process.env.NEXT_PUBLIC_WALLET_PROVIDER_API +
+							'vesu/positions',
+						{
+							address: wallet.address,
+							pool: 'Re7 USDC',
+						},
+						{
+							headers: {
+								'Content-Type': 'application/json',
+								Authorization: `Bearer ${process.env.NEXT_PUBLIC_WALLET_PROVIDER_TOKEN}`,
+							},
+						}
+					);
+					setApy(positionResponse.data.earnPositions[0].poolApy);
+					setTotalInvested(
+						positionResponse.data.earnPositions[0].total_supplied
+					);
+				}
+			} catch (error) {
+				console.error('Error fetching user positions', error);
+			} finally {
+				setIsLoading(false);
+			}
+		}
+
+		if (wallet) {
+			getAccountInfo();
+		}
+	}, [wallet]);
 
 	const handleClaimRewards = () => {
 		setShowClaimSuccess(true);
@@ -51,18 +91,13 @@ export default function Investments() {
 	return (
 		<div className="min-h-screen bg-[#11110E] text-white flex flex-col">
 			<Header />
-
-			{/* Main content */}
 			<main className="flex-1 px-4 py-40 md:px-6 container mx-auto max-w-lg">
-				{/* Page header */}
 				<motion.div
 					initial={{ opacity: 0, y: -20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.5 }}
 					className="text-center mb-10"
 				></motion.div>
-
-				{/* Investment summary card */}
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -78,130 +113,137 @@ export default function Investments() {
 						</div>
 					</div>
 
-					<div className="grid grid-cols-2 gap-6 mb-8">
-						<div className="bg-[#11110E]/50 p-4  border border-[#FFFFE3]/10">
-							<div className="flex items-center gap-3 mb-3">
-								<div className="w-10 h-10 bg-[#FFFFE3]/10 rounded-full flex items-center justify-center">
-									<svg
-										width="20"
-										height="20"
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="#FFFFE3"
-										strokeWidth="2"
-									>
-										<path
-											d="M3 17L9 11L13 15L21 7"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-										/>
-										<path
-											d="M15 7H21V13"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-										/>
-									</svg>
-								</div>
-								<span className="text-[#FFFFE3]/70 text-sm">
-									Invested
-								</span>
-							</div>
-							<p className="text-2xl font-bold">$11.43</p>
-							<p className="text-xs text-[#FFFFE3]/50 mt-1">
-								USDC
-							</p>
+					{isLoading ? (
+						<div className="flex justify-center items-center h-40">
+							<div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#FFFFE3]"></div>
 						</div>
-
-						<div className="bg-[#11110E]/50 p-4  border border-[#FFFFE3]/10">
-							<div className="flex items-center gap-3 mb-3">
-								<div className="w-10 h-10 bg-[#FFFFE3]/10 rounded-full flex items-center justify-center">
-									<svg
-										width="20"
-										height="20"
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="#FFFFE3"
-										strokeWidth="2"
-									>
-										<path
-											d="M18 20V10"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-										/>
-										<path
-											d="M12 20V4"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-										/>
-										<path
-											d="M6 20V14"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-										/>
-									</svg>
-								</div>
-								<span className="text-[#FFFFE3]/70 text-sm">
-									APY
-								</span>
-							</div>
-							<p className="text-2xl font-bold text-green-400">
-								6.52%
-							</p>
-							<p className="text-xs text-[#FFFFE3]/50 mt-1">
-								Current rate
-							</p>
-						</div>
-					</div>
-
-					{/* Claim rewards button with success notification */}
-					<div className="relative">
-						<motion.button
-							whileHover={{ scale: 1.02 }}
-							whileTap={{ scale: 0.95 }}
-							onClick={handleClaimRewards}
-							className={`w-full py-3.5 bg-[#FFFFE3] text-[#11110E] font-medium  flex items-center justify-center gap-2 transition-all ${showClaimSuccess ? 'bg-green-100' : ''}`}
-						>
-							{showClaimSuccess ? (
-								<>
-									<svg
-										width="20"
-										height="20"
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="currentColor"
-										strokeWidth="2"
-									>
-										<path
-											d="M20 6L9 17l-5-5"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-										/>
-									</svg>
-									Rewards Claimed!
-								</>
-							) : (
-								'Claim Rewards'
-							)}
-						</motion.button>
-
-						<AnimatePresence>
-							{showClaimSuccess && (
-								<motion.div
-									initial={{ opacity: 0, y: -10 }}
-									animate={{ opacity: 1, y: 0 }}
-									exit={{ opacity: 0, y: -10 }}
-									className="absolute -top-10 left-0 right-0 text-center"
-								>
-									<div className="inline-block px-3 py-1.5 text-xs bg-green-400/20 text-green-300 rounded-full">
-										+$2.14 USDC added to your balance
+					) : (
+						<>
+							<div className="grid grid-cols-2 gap-6 mb-8">
+								<div className="bg-[#11110E]/50 p-4  border border-[#FFFFE3]/10">
+									<div className="flex items-center gap-3 mb-3">
+										<div className="w-10 h-10 bg-[#FFFFE3]/10 rounded-full flex items-center justify-center">
+											<svg
+												width="20"
+												height="20"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="#FFFFE3"
+												strokeWidth="2"
+											>
+												<path
+													d="M3 17L9 11L13 15L21 7"
+													strokeLinecap="round"
+													strokeLinejoin="round"
+												/>
+												<path
+													d="M15 7H21V13"
+													strokeLinecap="round"
+													strokeLinejoin="round"
+												/>
+											</svg>
+										</div>
+										<span className="text-[#FFFFE3]/70 text-sm">
+											Invested
+										</span>
 									</div>
-								</motion.div>
-							)}
-						</AnimatePresence>
-					</div>
-				</motion.div>
+									<p className="text-2xl font-bold">
+										${totalInvested.toFixed(2)}
+									</p>
+									<p className="text-xs text-[#FFFFE3]/50 mt-1">
+										USDC
+									</p>
+								</div>
 
-				{/* Invest button */}
+								<div className="bg-[#11110E]/50 p-4  border border-[#FFFFE3]/10">
+									<div className="flex items-center gap-3 mb-3">
+										<div className="w-10 h-10 bg-[#FFFFE3]/10 rounded-full flex items-center justify-center">
+											<svg
+												width="20"
+												height="20"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="#FFFFE3"
+												strokeWidth="2"
+											>
+												<path
+													d="M18 20V10"
+													strokeLinecap="round"
+													strokeLinejoin="round"
+												/>
+												<path
+													d="M12 20V4"
+													strokeLinecap="round"
+													strokeLinejoin="round"
+												/>
+												<path
+													d="M6 20V14"
+													strokeLinecap="round"
+													strokeLinejoin="round"
+												/>
+											</svg>
+										</div>
+										<span className="text-[#FFFFE3]/70 text-sm">
+											APY
+										</span>
+									</div>
+									<p className="text-2xl font-bold text-green-400">
+										{apy.toFixed(2)}%
+									</p>
+									<p className="text-xs text-[#FFFFE3]/50 mt-1">
+										Current rate
+									</p>
+								</div>
+							</div>
+							<div className="relative">
+								<motion.button
+									whileHover={{ scale: 1.02 }}
+									whileTap={{ scale: 0.95 }}
+									onClick={handleClaimRewards}
+									className={`w-full py-3.5 bg-[#FFFFE3] text-[#11110E] font-medium  flex items-center justify-center gap-2 transition-all ${showClaimSuccess ? 'bg-green-100' : ''}`}
+								>
+									{showClaimSuccess ? (
+										<>
+											<svg
+												width="20"
+												height="20"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												strokeWidth="2"
+											>
+												<path
+													d="M20 6L9 17l-5-5"
+													strokeLinecap="round"
+													strokeLinejoin="round"
+												/>
+											</svg>
+											Rewards Claimed!
+										</>
+									) : (
+										'Claim Rewards'
+									)}
+								</motion.button>
+
+								<AnimatePresence>
+									{showClaimSuccess && (
+										<motion.div
+											initial={{ opacity: 0, y: -10 }}
+											animate={{ opacity: 1, y: 0 }}
+											exit={{ opacity: 0, y: -10 }}
+											className="absolute -top-10 left-0 right-0 text-center"
+										>
+											<div className="inline-block px-3 py-1.5 text-xs bg-green-400/20 text-green-300 rounded-full">
+												+$2.14 USDC added to your
+												balance
+											</div>
+										</motion.div>
+									)}
+								</AnimatePresence>
+							</div>
+						</>
+					)}
+				</motion.div>
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -228,27 +270,6 @@ export default function Investments() {
 						</svg>
 						Invest
 					</motion.button>
-				</motion.div>
-
-				{/* Additional investment stats */}
-				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.5, delay: 0.4 }}
-					className="mt-8 grid grid-cols-2 gap-4"
-				>
-					<div className="bg-[#1A1916]/50 p-4  border border-[#FFFFE3]/10">
-						<p className="text-[#FFFFE3]/70 text-sm mb-1">Earned</p>
-						<p className="text-lg font-semibold text-green-400">
-							$2.14
-						</p>
-					</div>
-					<div className="bg-[#1A1916]/50 p-4  border border-[#FFFFE3]/10">
-						<p className="text-[#FFFFE3]/70 text-sm mb-1">
-							Duration
-						</p>
-						<p className="text-lg font-semibold">42 days</p>
-					</div>
 				</motion.div>
 			</main>
 			<Footer />
