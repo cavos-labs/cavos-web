@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -8,6 +7,7 @@ import { useUserWallet } from '../lib/atoms/userWallet';
 import { useAtomValue } from 'jotai';
 import { FiLogIn } from 'react-icons/fi';
 import axios from 'axios';
+import Link from 'next/link';
 
 export default function Investments() {
 	const [showClaimSuccess, setShowClaimSuccess] = useState(false);
@@ -249,27 +249,29 @@ export default function Investments() {
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.5, delay: 0.3 }}
 				>
-					<motion.button
-						whileHover={{ scale: 1.02 }}
-						whileTap={{ scale: 0.98 }}
-						className="w-full py-4 border-2 border-[#FFFFE3] text-[#FFFFE3] font-medium text-lg  hover:bg-[#FFFFE3]/10 transition-colors flex items-center justify-center gap-2"
-					>
-						<svg
-							width="20"
-							height="20"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							strokeWidth="2"
+					<Link href="/invest">
+						<motion.button
+							whileHover={{ scale: 1.02 }}
+							whileTap={{ scale: 0.98 }}
+							className="w-full py-4 border-2 border-[#FFFFE3] text-[#FFFFE3] font-medium text-lg  hover:bg-[#FFFFE3]/10 transition-colors flex items-center justify-center gap-2"
 						>
-							<path
-								d="M12 5v14m-7-7h14"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-							/>
-						</svg>
-						Invest
-					</motion.button>
+							<svg
+								width="20"
+								height="20"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth="2"
+							>
+								<path
+									d="M12 5v14m-7-7h14"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								/>
+							</svg>
+							Invest
+						</motion.button>
+					</Link>
 				</motion.div>
 			</main>
 			<Footer />

@@ -11,6 +11,8 @@ interface UserWallet {
 	uid: string;
 	updated_at: string;
 	user_name: string | null;
+	deployment_data: string | null;
+	deployed: string | null;
 }
 
 export const useUserWallet = atom<UserWallet | null>(null);
