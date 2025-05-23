@@ -8,6 +8,8 @@ import { useAtomValue } from 'jotai';
 import { FiLogIn } from 'react-icons/fi';
 import axios from 'axios';
 import Link from 'next/link';
+import { supabase } from '../lib/supabase';
+import AlertModal from '../modals/AlertModal';
 
 export default function Investments() {
 	const [showClaimSuccess, setShowClaimSuccess] = useState(false);
@@ -15,6 +17,17 @@ export default function Investments() {
 	const [totalInvested, setTotalInvested] = useState(0);
 	const [apy, setApy] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [modalProps, setModalProps] = useState({
+		title: '',
+		message: '',
+		type: 'info',
+		confirmText: 'OK',
+		cancelText: 'Cancel',
+		onConfirm: () => {},
+		showCancel: false,
+		isLoading: false,
+	});
 
 	useEffect(() => {
 		async function getAccountInfo() {
@@ -64,9 +77,110 @@ export default function Investments() {
 		}
 	}, [wallet]);
 
-	const handleClaimRewards = () => {
-		setShowClaimSuccess(true);
-		setTimeout(() => setShowClaimSuccess(false), 3000);
+	const handleClaimRewards = async () => {
+		setModalProps({
+			title: 'Claiming Rewards',
+			message: 'Please wait while we process your claim...',
+			type: 'info',
+			confirmText: 'OK',
+			cancelText: 'Cancel',
+			onConfirm: () => {},
+			showCancel: false,
+			isLoading: true,
+		});
+		setIsModalOpen(true);
+
+		setIsLoading(true);
+		try {
+			if (wallet) {
+				const response = await axios.post(
+					process.env.NEXT_PUBLIC_WALLET_PROVIDER_API +
+						'vesu/positions/claim',
+					{
+						address: wallet.address,
+						hashedPk: wallet.private_key,
+						hashedPin: wallet.pin,
+					},
+					{
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${process.env.NEXT_PUBLIC_WALLET_PROVIDER_TOKEN}`,
+						},
+					}
+				);
+
+				console.log('Claim response:', response.data);
+
+				if (response.data.result === false) {
+					setModalProps({
+						title: 'No rewards available',
+						message:
+							'Come back in a few days to claim your rewards',
+						type: 'info',
+						confirmText: 'OK',
+						cancelText: 'Cancel',
+						onConfirm: () => setIsModalOpen(false),
+						showCancel: false,
+						isLoading: false,
+					});
+				} else if (
+					response.data.amount !== null &&
+					response.data.result !== null
+				) {
+					const { error: txError } = await supabase
+						.from('transaction')
+						.insert([
+							{
+								uid: wallet.uid,
+								type: 'Claim',
+								amount: response.data.amount,
+								tx_hash: response.data.result,
+							},
+						]);
+
+					if (txError) {
+						console.error('Insert error:', txError);
+						setModalProps({
+							title: 'Database Error',
+							message: 'Error saving transaction to database',
+							type: 'error',
+							confirmText: 'OK',
+							cancelText: 'Cancel',
+							onConfirm: () => setIsModalOpen(false),
+							showCancel: false,
+							isLoading: false,
+						});
+						return;
+					}
+					setShowClaimSuccess(true);
+					setTimeout(() => setShowClaimSuccess(false), 3000);
+					setModalProps({
+						title: 'Rewards Claimed!',
+						message: `Total amount in USDC: ${response.data.amount}`,
+						type: 'success',
+						confirmText: 'OK',
+						cancelText: 'Cancel',
+						onConfirm: () => setIsModalOpen(false),
+						showCancel: false,
+						isLoading: false,
+					});
+				}
+			}
+		} catch (error) {
+			console.error('Error claiming rewards', error);
+			setModalProps({
+				title: 'Error claiming rewards',
+				message: 'Please try again later.',
+				type: 'error',
+				confirmText: 'OK',
+				cancelText: 'Cancel',
+				onConfirm: () => setIsModalOpen(false),
+				showCancel: false,
+				isLoading: false,
+			});
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	// NOT LOGGED USER
@@ -286,6 +400,15 @@ export default function Investments() {
 					</Link>
 				</motion.div>
 			</main>
+			<AlertModal
+				isOpen={isModalOpen}
+				onClose={() => {
+					if (!modalProps.isLoading) {
+						setIsModalOpen(false);
+					}
+				}}
+				{...modalProps}
+			/>
 			<Footer />
 		</div>
 	);
