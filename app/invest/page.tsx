@@ -10,6 +10,7 @@ import { getWalletBalance } from '../lib/utils';
 import axios from 'axios';
 import { supabase } from '../lib/supabase';
 import { FiDollarSign } from 'react-icons/fi';
+import AlertModal from '../modals/AlertModal';
 
 export default function Invest() {
 	const router = useRouter();
@@ -18,8 +19,17 @@ export default function Invest() {
 	const [balance, setBalance] = useState<number>(0);
 	const wallet = useAtomValue(useUserWallet);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [showSuccessMessage, setShowSuccessMessage] =
-		useState<boolean>(false);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [modalProps, setModalProps] = useState({
+		title: '',
+		message: '',
+		type: 'info',
+		confirmText: 'OK',
+		cancelText: 'Cancel',
+		onConfirm: () => {},
+		showCancel: false,
+		isLoading: false,
+	});
 
 	useEffect(() => {
 		async function getAccountInfo() {
@@ -42,6 +52,29 @@ export default function Invest() {
 		const text = event.target.value;
 		const sanitized = text.replace(',', '.');
 		setInvestmentAmount(sanitized);
+	};
+
+	const showModal = (
+		title: string,
+		message: string,
+		type = 'info',
+		confirmText = 'OK',
+		onConfirm = () => {},
+		showCancel = false,
+		cancelText = 'Cancel',
+		isModalLoading = false
+	) => {
+		setModalProps({
+			title,
+			message,
+			type,
+			confirmText,
+			cancelText,
+			onConfirm,
+			showCancel,
+			isLoading: isModalLoading,
+		});
+		setIsModalOpen(true);
 	};
 
 	const createPosition = async () => {
@@ -79,24 +112,42 @@ export default function Invest() {
 			isNaN(Number(investmentAmount)) ||
 			parseFloat(investmentAmount) <= 0
 		) {
-			alert('Invalid Amount - Please enter a valid investment amount');
-			return;
-		}
-
-		if (parseFloat(investmentAmount) > balance) {
-			alert(
-				"Insufficient Balance - You don't have enough funds for this investment"
+			showModal(
+				'Invalid Amount',
+				'Please enter a valid investment amount',
+				'error'
 			);
 			return;
 		}
 
-		const confirmed = window.confirm(
-			`Invest $${investmentAmount} in ${selectedPool}?`
-		);
-
-		if (confirmed) {
-			await handleConfirmInvestment();
+		if (parseFloat(investmentAmount) > balance) {
+			showModal(
+				'Insufficient Balance',
+				"You don't have enough funds for this investment",
+				'error'
+			);
+			return;
 		}
+
+		showModal(
+			'Confirm Investment',
+			`Invest $${investmentAmount} in ${selectedPool}?`,
+			'confirm',
+			'Invest',
+			async () => {
+				setModalProps((prev) => ({
+					...prev,
+					title: 'Processing Investment',
+					message: 'Please wait while we process your investment...',
+					isLoading: true,
+					showCancel: false,
+				}));
+
+				await handleConfirmInvestment();
+			},
+			true,
+			'Cancel'
+		);
 	};
 
 	const handleConfirmInvestment = async () => {
@@ -106,7 +157,14 @@ export default function Invest() {
 				const positionTx = await createPosition();
 
 				if (positionTx?.result == null) {
-					alert('Error creating position');
+					setModalProps((prev) => ({
+						...prev,
+						title: 'Investment Error',
+						message: 'Error creating position. Please try again.',
+						type: 'error',
+						isLoading: false,
+						showCancel: false,
+					}));
 					return;
 				}
 
@@ -123,19 +181,42 @@ export default function Invest() {
 
 				if (txError) {
 					console.error('Insert error:', txError);
-					alert('Error saving transaction to database');
+					setModalProps((prev) => ({
+						...prev,
+						title: 'Database Error',
+						message: 'Error saving transaction to database',
+						type: 'error',
+						isLoading: false,
+						showCancel: false,
+					}));
 					return;
 				}
 
-				setShowSuccessMessage(true);
-				setTimeout(() => {
-					setShowSuccessMessage(false);
-					router.push('/dashboard');
-				}, 2000);
+				setModalProps((prev) => ({
+					...prev,
+					title: 'Investment Successful',
+					message: `You've successfully invested $${investmentAmount} in ${selectedPool}`,
+					type: 'success',
+					confirmText: 'Go to Dashboard',
+					isLoading: false,
+					showCancel: false,
+					onConfirm: () => {
+						setIsModalOpen(false);
+						router.push('/dashboard');
+					},
+				}));
 			}
 		} catch (error) {
 			console.error('Error during investment:', error);
-			alert('An error occurred while creating position, try again.');
+			setModalProps((prev) => ({
+				...prev,
+				title: 'Investment Failed',
+				message:
+					'An error occurred while creating position, try again.',
+				type: 'error',
+				isLoading: false,
+				showCancel: false,
+			}));
 		} finally {
 			setIsLoading(false);
 		}
@@ -265,17 +346,21 @@ export default function Invest() {
 							disabled={
 								!investmentAmount ||
 								isNaN(Number(investmentAmount)) ||
-								parseFloat(investmentAmount) <= 0
+								parseFloat(investmentAmount) <= 0 ||
+								isLoading ||
+								modalProps.isLoading
 							}
 							className={`w-full py-4 font-medium text-lg rounded-lg transition-all ${
 								!investmentAmount ||
 								isNaN(Number(investmentAmount)) ||
-								parseFloat(investmentAmount) <= 0
+								parseFloat(investmentAmount) <= 0 ||
+								isLoading ||
+								modalProps.isLoading
 									? 'bg-[#FFFFE3]/20 text-[#FFFFE3]/50 cursor-not-allowed'
 									: 'bg-[#FFFFE3] text-[#11110E] hover:bg-[#FFFFE3]/90'
 							}`}
 						>
-							Invest
+							{isLoading ? 'Processing...' : 'Invest'}
 						</motion.button>
 					</motion.div>
 
@@ -292,21 +377,15 @@ export default function Invest() {
 				</div>
 			</main>
 
-			{/* Success Message */}
-			<AnimatePresence>
-				{showSuccessMessage && (
-					<motion.div
-						initial={{ opacity: 0, y: -10 }}
-						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: -10 }}
-						className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
-					>
-						<div className="px-6 py-3 text-sm bg-green-400/20 text-green-300 rounded-full border border-green-400/30 backdrop-blur-sm">
-							Investment successful! Redirecting to dashboard...
-						</div>
-					</motion.div>
-				)}
-			</AnimatePresence>
+			<AlertModal
+				isOpen={isModalOpen}
+				onClose={() => {
+					if (!modalProps.isLoading) {
+						setIsModalOpen(false);
+					}
+				}}
+				{...modalProps}
+			/>
 
 			<Footer />
 		</div>

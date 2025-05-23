@@ -35,10 +35,22 @@ export default function Investments() {
 							},
 						}
 					);
-					setApy(positionResponse.data.earnPositions[0].poolApy);
-					setTotalInvested(
-						positionResponse.data.earnPositions[0].total_supplied
+
+					const apyResponse = await axios.post(
+						process.env.NEXT_PUBLIC_WALLET_PROVIDER_API +
+							'vesu/pool/apy',
+						{
+							poolName: 'Re7 USDC',
+						},
+						{
+							headers: {
+								'Content-Type': 'application/json',
+								Authorization: `Bearer ${process.env.NEXT_PUBLIC_WALLET_PROVIDER_TOKEN}`,
+							},
+						}
 					);
+					setApy(apyResponse.data.poolAPY);
+					setTotalInvested(positionResponse.data.total_supplied);
 				}
 			} catch (error) {
 				console.error('Error fetching user positions', error);
