@@ -25,7 +25,7 @@ export default function Footer() {
 						</li>
 						<li>
 							<a
-								href="/invest"
+								href="/investments"
 								className="hover:text-gray-300 transition-colors"
 							>
 								Invest
@@ -38,20 +38,12 @@ export default function Footer() {
 					<ul className="space-y-2">
 						<li>
 							<a
-								href="https://vesu.xyz"
+								href="https://vesu.xyz/"
 								target="_blank"
 								rel="noopener noreferrer"
 								className="hover:text-gray-300 transition-colors"
 							>
 								Vesu.xyz
-							</a>
-						</li>
-						<li>
-							<a
-								href="/app-store"
-								className="hover:text-gray-300 transition-colors"
-							>
-								App Store
 							</a>
 						</li>
 					</ul>
@@ -61,7 +53,7 @@ export default function Footer() {
 					<ul className="space-y-2">
 						<li>
 							<a
-								href="https://x.com/ethersight"
+								href="https://x.com/cavosxyz"
 								target="_blank"
 								rel="noopener noreferrer"
 								className="hover:text-gray-300 transition-colors"
@@ -71,7 +63,7 @@ export default function Footer() {
 						</li>
 						<li>
 							<a
-								href="https://github.com/ethersight"
+								href="https://github.com/adrianvrj/cavos-web"
 								target="_blank"
 								rel="noopener noreferrer"
 								className="hover:text-gray-300 transition-colors"
@@ -81,7 +73,7 @@ export default function Footer() {
 						</li>
 						<li>
 							<a
-								href="https://discord.gg/ethersight"
+								href="https://discord.gg/JzCj6vFtAT"
 								target="_blank"
 								rel="noopener noreferrer"
 								className="hover:text-gray-300 transition-colors"
@@ -96,7 +88,7 @@ export default function Footer() {
 					<ul className="space-y-2">
 						<li>
 							<a
-								href="/terms"
+								href="/"
 								className="hover:text-gray-300 transition-colors"
 							>
 								Terms of Service
@@ -104,7 +96,7 @@ export default function Footer() {
 						</li>
 						<li>
 							<a
-								href="/privacy"
+								href="/"
 								className="hover:text-gray-300 transition-colors"
 							>
 								Privacy Policy
@@ -116,12 +108,12 @@ export default function Footer() {
 
 			<div className="container mx-auto flex flex-col md:flex-row justify-between items-center border-t border-gray-700 pt-6">
 				<div className="text-sm mb-4 md:mb-0">
-					© EtherSight 2025. All Operations Monitored. All Rights
+					© CAVOS 2025. All Operations Monitored. All Rights
 					Reserved.
 				</div>
 				<div className="flex space-x-4">
 					<a
-						href="https://x.com/ethersight"
+						href="https://x.com/cavosxyz"
 						target="_blank"
 						rel="noopener noreferrer"
 						className="hover:text-gray-300 transition-colors"
@@ -129,7 +121,7 @@ export default function Footer() {
 						<Twitter size={24} />
 					</a>
 					<a
-						href="https://github.com/ethersight"
+						href="https://github.com/adrianvrj/cavos-web"
 						target="_blank"
 						rel="noopener noreferrer"
 						className="hover:text-gray-300 transition-colors"
@@ -137,7 +129,7 @@ export default function Footer() {
 						<Github size={24} />
 					</a>
 					<a
-						href="https://discord.gg/ethersight"
+						href="https://discord.gg/JzCj6vFtAT"
 						target="_blank"
 						rel="noopener noreferrer"
 						className="hover:text-gray-300 transition-colors"
