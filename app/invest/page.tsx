@@ -6,7 +6,6 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useUserWallet } from '../lib/atoms/userWallet';
 import { useAtomValue } from 'jotai';
-import { getWalletBalance } from '../lib/utils';
 import axios from 'axios';
 import { supabase } from '../lib/supabase';
 import { FiDollarSign } from 'react-icons/fi';
@@ -35,11 +34,16 @@ export default function Invest() {
 		async function getAccountInfo() {
 			try {
 				if (wallet) {
-					const newBalance = await getWalletBalance(wallet.address);
+					const address = wallet.address;
+					const response = await axios.post(`/api/cavos/balance`, {
+						address,
+					});
+					const newBalance = response.data.data;
 					setBalance(newBalance.balance);
 				}
 			} catch (error) {
 				console.error('Error al obtener el balance:', error);
+				setBalance(0);
 			}
 		}
 
@@ -80,25 +84,11 @@ export default function Invest() {
 	const createPosition = async () => {
 		try {
 			if (wallet) {
-				const response = await axios.post(
-					process.env.NEXT_PUBLIC_WALLET_PROVIDER_API + 'position',
-					{
-						amount: investmentAmount,
-						address: wallet.address,
-						publicKey: wallet.public_key,
-						hashedPk: wallet.private_key,
-						hashedPin: wallet.pin,
-						deploymentData: wallet.deployment_data,
-						deployed: wallet.deployed,
-					},
-					{
-						headers: {
-							'Content-Type': 'application/json',
-							Authorization: `Bearer ${process.env.NEXT_PUBLIC_WALLET_PROVIDER_TOKEN}`,
-						},
-					}
-				);
-				return response.data;
+				const response = await axios.post(`/api/cavos/vesu/position`, {
+					investmentAmount,
+					wallet,
+				});
+				return response.data.data;
 			}
 		} catch (err) {
 			console.error('Error creating position:', err);
