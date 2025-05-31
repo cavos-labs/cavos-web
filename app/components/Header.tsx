@@ -35,7 +35,7 @@ function Header() {
 										src="/images/CavosLogo.png"
 										alt="Cavos Logo"
 										width={28}
-										height={28}
+										height={34}
 										className="cursor-pointer"
 									/>
 								</Link>
