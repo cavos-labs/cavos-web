@@ -10,7 +10,7 @@ body {
   color: var(--foreground);
 }
 
-h1, h2, a {
+h1, h2 {
   font-family: var(--font-ramagothic), sans-serif;
 }
 

@@ -1,14 +1,12 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import LoginModal from '../modals/Login';
-import { LoginButton, UserDropdown } from './UserProfleButton';
 import { useAtom } from 'jotai';
 import { useUserWallet } from '../lib/atoms/userWallet';
-import { ramagothicbold } from '../lib/fonts';
 
 function Header() {
 	const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -54,13 +52,22 @@ function Header() {
 										Dashboard
 									</motion.span>
 								</Link> */}
-								<Link href="/cavos-card">
+								<Link href="/card/waitlist">
 									<motion.span
 										whileTap={{ scale: 0.95 }}
 										className="hover:text-white transition-colors duration-300 cursor-pointer text-lg font-medium"
 									>
-										<svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 25 25">
-											<path d="M4.5 10.5H20.5M4.5 9.5H20.5M4.5 11.5H20.5M7 15.5H14M5.5 18.5H19.5C20.0523 18.5 20.5 18.0523 20.5 17.5V7.5C20.5 6.94772 20.0523 6.5 19.5 6.5H5.5C4.94772 6.5 4.5 6.94772 4.5 7.5V17.5C4.5 18.0523 4.94772 18.5 5.5 18.5Z" stroke="currentColor" strokeWidth="1.2" />
+										<svg
+											className="w-7 h-7"
+											fill="none"
+											stroke="currentColor"
+											viewBox="0 0 25 25"
+										>
+											<path
+												d="M4.5 10.5H20.5M4.5 9.5H20.5M4.5 11.5H20.5M7 15.5H14M5.5 18.5H19.5C20.0523 18.5 20.5 18.0523 20.5 17.5V7.5C20.5 6.94772 20.0523 6.5 19.5 6.5H5.5C4.94772 6.5 4.5 6.94772 4.5 7.5V17.5C4.5 18.0523 4.94772 18.5 5.5 18.5Z"
+												stroke="currentColor"
+												strokeWidth="1.2"
+											/>
 										</svg>
 									</motion.span>
 								</Link>
@@ -94,8 +101,18 @@ function Header() {
 							{/* Mobile Menu Button */}
 							<div className="md:hidden">
 								<button className="text-white p-2">
-									<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+									<svg
+										className="w-6 h-6"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+									>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											strokeWidth={2}
+											d="M4 6h16M4 12h16M4 18h16"
+										/>
 									</svg>
 								</button>
 							</div>

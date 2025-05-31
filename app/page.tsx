@@ -1,6 +1,6 @@
 'use client';
 import { useRef, useState } from 'react';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import Header from './components/Header';
@@ -97,7 +97,8 @@ export default function Home() {
 								transition={{ duration: 0.7, delay: 0.2 }}
 								className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto"
 							>
-								All-in-one crypto banking solution for the modern world
+								All-in-one crypto banking solution for the
+								modern world
 							</motion.p>
 						</div>
 
@@ -111,39 +112,43 @@ export default function Home() {
 								<div className="grid gap-8 md:gap-10">
 									{[
 										{
-											title: "Invest stable coins",
-											subtitle: "Secure wealth growth",
-											delay: 0
+											title: 'Invest stable coins',
+											subtitle: 'Secure wealth growth',
+											delay: 0,
 										},
 										{
-											title: "Send payments to Cavos users via username/phone number",
-											subtitle: "Instant transfers",
-											delay: 0.1
+											title: 'Send payments to Cavos users via username/phone number',
+											subtitle: 'Instant transfers',
+											delay: 0.1,
 										},
 										{
-											title: "QR payments",
-											subtitle: "Scan and pay anywhere",
-											delay: 0.2
+											title: 'QR payments',
+											subtitle: 'Scan and pay anywhere',
+											delay: 0.2,
 										},
 										{
-											title: "Virtual cards in minutes",
-											subtitle: "Instant card generation",
-											delay: 0.3
+											title: 'Virtual cards in minutes',
+											subtitle: 'Instant card generation',
+											delay: 0.3,
 										},
 										{
-											title: "Buy, sell and invest in BTC with just one click",
-											subtitle: "Seamless Bitcoin trading",
-											delay: 0.4
-										}
+											title: 'Buy, sell and invest in BTC with just one click',
+											subtitle:
+												'Seamless Bitcoin trading',
+											delay: 0.4,
+										},
 									].map((feature, index) => (
 										<motion.div
 											key={index}
 											initial={{ opacity: 0, x: -20 }}
 											whileInView={{ opacity: 1, x: 0 }}
-											transition={{ duration: 0.6, delay: feature.delay }}
+											transition={{
+												duration: 0.6,
+												delay: feature.delay,
+											}}
 											whileHover={{
 												x: 20,
-												transition: { duration: 0.3 }
+												transition: { duration: 0.3 },
 											}}
 											className="group relative"
 										>
@@ -155,19 +160,23 @@ export default function Home() {
 												<motion.div
 													className="relative mt-3 flex-shrink-0"
 													whileHover={{ scale: 1.5 }}
-													transition={{ duration: 0.2 }}
+													transition={{
+														duration: 0.2,
+													}}
 												>
 													<div className="w-3 h-3 bg-white rounded-full relative z-10"></div>
 													<motion.div
 														className="absolute inset-0 bg-white rounded-full opacity-30"
 														animate={{
 															scale: [1, 1.8, 1],
-															opacity: [0.3, 0, 0.3]
+															opacity: [
+																0.3, 0, 0.3,
+															],
 														}}
 														transition={{
 															duration: 2,
 															repeat: Infinity,
-															delay: index * 0.2
+															delay: index * 0.2,
 														}}
 													></motion.div>
 												</motion.div>
@@ -175,14 +184,16 @@ export default function Home() {
 												<div className="flex-1 relative z-10">
 													<motion.h3
 														className="text-xl md:text-2xl lg:text-3xl font-medium leading-relaxed mb-2 group-hover:text-white transition-colors duration-300"
-														initial={{ opacity: 0.9 }}
-														whileHover={{ opacity: 1 }}
+														initial={{
+															opacity: 0.9,
+														}}
+														whileHover={{
+															opacity: 1,
+														}}
 													>
 														{feature.title}
 													</motion.h3>
-													<motion.p
-														className="text-white/60 text-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0"
-													>
+													<motion.p className="text-white/60 text-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
 														{feature.subtitle}
 													</motion.p>
 												</div>
@@ -193,8 +204,18 @@ export default function Home() {
 													initial={{ x: -10 }}
 													whileHover={{ x: 0 }}
 												>
-													<svg className="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-														<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+													<svg
+														className="w-6 h-6 text-white/60"
+														fill="none"
+														stroke="currentColor"
+														viewBox="0 0 24 24"
+													>
+														<path
+															strokeLinecap="round"
+															strokeLinejoin="round"
+															strokeWidth={2}
+															d="M9 5l7 7-7 7"
+														/>
 													</svg>
 												</motion.div>
 											</div>
@@ -216,16 +237,20 @@ export default function Home() {
 													key={i}
 													className="w-2 h-2 bg-white rounded-full"
 													initial={{ opacity: 0.3 }}
-													animate={{ opacity: [0.3, 1, 0.3] }}
+													animate={{
+														opacity: [0.3, 1, 0.3],
+													}}
 													transition={{
 														duration: 2,
 														repeat: Infinity,
-														delay: i * 0.2
+														delay: i * 0.2,
 													}}
 												></motion.div>
 											))}
 										</div>
-										<span className="text-white/60 text-sm tracking-wider">5 CORE FEATURES</span>
+										<span className="text-white/60 text-sm tracking-wider">
+											5 CORE FEATURES
+										</span>
 									</div>
 									<div className="text-white/40 text-sm font-medium">
 										MORE COMING SOON
@@ -248,14 +273,17 @@ export default function Home() {
 											style={{
 												left: `${20 + i * 30}%`,
 												height: '60%',
-												top: '20%'
+												top: '20%',
 											}}
 											initial={{ opacity: 0, scaleY: 0 }}
-											whileInView={{ opacity: 1, scaleY: 1 }}
+											whileInView={{
+												opacity: 1,
+												scaleY: 1,
+											}}
 											transition={{
 												duration: 1.5,
 												delay: i * 0.3,
-												ease: "easeOut"
+												ease: 'easeOut',
 											}}
 										></motion.div>
 									))}
@@ -266,7 +294,10 @@ export default function Home() {
 									className="relative w-[250px] h-[500px] md:w-[300px] md:h-[600px] lg:w-[350px] lg:h-[700px]"
 									whileHover={{
 										y: -10,
-										transition: { duration: 0.4, ease: "easeOut" }
+										transition: {
+											duration: 0.4,
+											ease: 'easeOut',
+										},
 									}}
 								>
 									{/* Subtle glow effect */}
@@ -288,7 +319,11 @@ export default function Home() {
 									{[
 										{ top: '15%', right: '-10%', delay: 0 },
 										{ top: '45%', left: '-8%', delay: 1 },
-										{ bottom: '25%', right: '-12%', delay: 2 }
+										{
+											bottom: '25%',
+											right: '-12%',
+											delay: 2,
+										},
 									].map((point, i) => (
 										<motion.div
 											key={i}
@@ -296,12 +331,12 @@ export default function Home() {
 											style={{ ...point }}
 											animate={{
 												scale: [1, 1.5, 1],
-												opacity: [0.6, 1, 0.6]
+												opacity: [0.6, 1, 0.6],
 											}}
 											transition={{
 												duration: 3,
 												repeat: Infinity,
-												delay: point.delay
+												delay: point.delay,
 											}}
 										></motion.div>
 									))}
@@ -327,33 +362,39 @@ export default function Home() {
 								transition={{ duration: 0.7, delay: 0.2 }}
 								className="text-xl md:text-2xl text-white/80 max-w-4xl mx-auto leading-relaxed"
 							>
-								Leveraging cutting-edge blockchain technologies for maximum performance, security, and lightning-fast transactions
+								Leveraging cutting-edge blockchain technologies
+								for maximum performance, security, and
+								lightning-fast transactions
 							</motion.p>
 						</div>
 
 						<div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 max-w-6xl mx-auto mb-16">
 							{[
 								{
-									name: "Starknet",
-									logo: "/images/starknet-logo.svg",
-									description: "Lightning-fast L2 scaling solution"
+									name: 'Starknet',
+									logo: '/images/starknet-logo.svg',
+									description:
+										'Lightning-fast L2 scaling solution',
 								},
 								{
-									name: "Argent",
-									logo: "/images/ArgentLogo.svg",
-									description: "Smart wallet infrastructure"
+									name: 'Argent',
+									logo: '/images/ArgentLogo.svg',
+									description: 'Smart wallet infrastructure',
 								},
 								{
-									name: "AVNU",
-									logo: "/images/AVNULogo.svg",
-									description: "DEX aggregation protocol"
+									name: 'AVNU',
+									logo: '/images/AVNULogo.svg',
+									description: 'DEX aggregation protocol',
 								},
 							].map((tech, index) => (
 								<motion.div
 									key={index}
 									initial={{ opacity: 0, y: 30 }}
 									whileInView={{ opacity: 1, y: 0 }}
-									transition={{ duration: 0.6, delay: index * 0.2 }}
+									transition={{
+										duration: 0.6,
+										delay: index * 0.2,
+									}}
 									whileHover={{ scale: 1.05, y: -10 }}
 									className="flex flex-col items-center text-center p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300"
 								>
@@ -361,12 +402,16 @@ export default function Home() {
 										<Image
 											src={tech.logo}
 											alt={tech.name}
-											fill
+											layout="fill"
 											className="object-contain filter brightness-90 hover:brightness-100 transition-all duration-300"
 										/>
 									</div>
-									<h3 className="text-2xl md:text-3xl font-bold mb-3">{tech.name}</h3>
-									<p className="text-white/70 text-lg">{tech.description}</p>
+									<h3 className="text-2xl md:text-3xl font-bold mb-3">
+										{tech.name}
+									</h3>
+									<p className="text-white/70 text-lg">
+										{tech.description}
+									</p>
 								</motion.div>
 							))}
 						</div>
@@ -395,7 +440,9 @@ export default function Home() {
 								transition={{ duration: 0.7, delay: 0.2 }}
 								className="text-xl md:text-2xl font-medium max-w-3xl mx-auto text-white/80 leading-relaxed"
 							>
-								Be the first to experience the future of crypto banking. Get exclusive early access when we launch.
+								Be the first to experience the future of crypto
+								banking. Get exclusive early access when we
+								launch.
 							</motion.p>
 						</div>
 
@@ -412,7 +459,9 @@ export default function Home() {
 										placeholder="Enter your email address"
 										className="flex-1 bg-white/5 backdrop-blur-sm border-2 border-white/20 px-6 py-4 md:px-8 md:py-5 focus:outline-none focus:border-white/60 focus:bg-white/10 text-lg md:text-xl placeholder-white/50 rounded-xl transition-all duration-300"
 										value={email}
-										onChange={(e) => setEmail(e.target.value)}
+										onChange={(e) =>
+											setEmail(e.target.value)
+										}
 										required
 									/>
 									<motion.button
@@ -434,7 +483,8 @@ export default function Home() {
 										className="text-center p-6 bg-green-500/10 border border-green-500/20 rounded-xl backdrop-blur-sm"
 									>
 										<p className="text-lg md:text-xl font-medium text-green-400">
-											You're in! We'll notify you as soon as Cavos is ready to launch.
+											You're in! We'll notify you as soon
+											as Cavos is ready to launch.
 										</p>
 									</motion.div>
 								)}

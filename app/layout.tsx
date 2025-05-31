@@ -15,7 +15,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" suppressHydrationWarning>
-			<body className={`${ramagothicbold.variable} ${roboto.variable} bg-[#000] text-[#EAE5DC]`}>
+			<body
+				className={`${ramagothicbold.variable} ${roboto.variable} bg-[#000] text-[#EAE5DC]`}
+			>
 				{children}
 			</body>
 		</html>
