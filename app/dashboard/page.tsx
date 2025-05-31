@@ -10,7 +10,7 @@ import { useUserWallet } from '../lib/atoms/userWallet';
 import { useUserId } from '../lib/atoms/userId';
 import { useAtomValue } from 'jotai';
 import { FiLogIn } from 'react-icons/fi';
-import { getWalletBalance } from '../lib/utils';
+import axios from 'axios';
 
 export default function Dashboard() {
 	const wallet = useAtomValue(useUserWallet);
@@ -23,11 +23,16 @@ export default function Dashboard() {
 			try {
 				if (wallet && userId) {
 					setIsLoading(true);
-					const newBalance = await getWalletBalance(wallet.address);
+					const address = wallet.address;
+					const response = await axios.post(`/api/cavos/balance`, {
+						address,
+					});
+					const newBalance = response.data.data;
 					setBalance(newBalance.balance);
 				}
 			} catch (error) {
 				console.error('Error obtaining balance:', error);
+				setBalance(0);
 			} finally {
 				setIsLoading(false);
 			}

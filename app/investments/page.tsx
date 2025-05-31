@@ -34,36 +34,21 @@ export default function Investments() {
 			try {
 				if (wallet) {
 					setIsLoading(true);
-					const positionResponse = await axios.post(
-						process.env.NEXT_PUBLIC_WALLET_PROVIDER_API +
-							'vesu/positions',
-						{
-							address: wallet.address,
-							pool: 'Re7 USDC',
-						},
-						{
-							headers: {
-								'Content-Type': 'application/json',
-								Authorization: `Bearer ${process.env.NEXT_PUBLIC_WALLET_PROVIDER_TOKEN}`,
-							},
-						}
-					);
 
-					const apyResponse = await axios.post(
-						process.env.NEXT_PUBLIC_WALLET_PROVIDER_API +
-							'vesu/pool/apy',
+					const positionResponse = await axios.post(
+						`/api/cavos/vesu/positions`,
 						{
-							poolName: 'Re7 USDC',
-						},
-						{
-							headers: {
-								'Content-Type': 'application/json',
-								Authorization: `Bearer ${process.env.NEXT_PUBLIC_WALLET_PROVIDER_TOKEN}`,
-							},
+							wallet,
 						}
 					);
-					setApy(apyResponse.data.poolAPY);
-					setTotalInvested(positionResponse.data.total_supplied);
+					const apyResponse = await axios.post(
+						`/api/cavos/vesu/apy`,
+						{
+							wallet,
+						}
+					);
+					setApy(apyResponse.data.data.poolAPY);
+					setTotalInvested(positionResponse.data.data.total_supplied);
 				}
 			} catch (error) {
 				console.error('Error fetching user positions', error);
@@ -93,25 +78,11 @@ export default function Investments() {
 		setIsLoading(true);
 		try {
 			if (wallet) {
-				const response = await axios.post(
-					process.env.NEXT_PUBLIC_WALLET_PROVIDER_API +
-						'vesu/positions/claim',
-					{
-						address: wallet.address,
-						hashedPk: wallet.private_key,
-						hashedPin: wallet.pin,
-					},
-					{
-						headers: {
-							'Content-Type': 'application/json',
-							Authorization: `Bearer ${process.env.NEXT_PUBLIC_WALLET_PROVIDER_TOKEN}`,
-						},
-					}
-				);
+				const response = await axios.post(`/api/cavos/vesu/claim`, {
+					wallet,
+				});
 
-				console.log('Claim response:', response.data);
-
-				if (response.data.result === false) {
+				if (response.data.data.result === false) {
 					setModalProps({
 						title: 'No rewards available',
 						message:
@@ -124,8 +95,8 @@ export default function Investments() {
 						isLoading: false,
 					});
 				} else if (
-					response.data.amount !== null &&
-					response.data.result !== null
+					response.data.data.amount !== null &&
+					response.data.data.result !== null
 				) {
 					const { error: txError } = await supabase
 						.from('transaction')
@@ -133,8 +104,8 @@ export default function Investments() {
 							{
 								uid: wallet.uid,
 								type: 'Claim',
-								amount: response.data.amount,
-								tx_hash: response.data.result,
+								amount: response.data.data.amount,
+								tx_hash: response.data.data.result,
 							},
 						]);
 
@@ -156,7 +127,7 @@ export default function Investments() {
 					setTimeout(() => setShowClaimSuccess(false), 3000);
 					setModalProps({
 						title: 'Rewards Claimed!',
-						message: `Total amount in USDC: ${response.data.amount}`,
+						message: `Total amount in USDC: ${response.data.data.amount}`,
 						type: 'success',
 						confirmText: 'OK',
 						cancelText: 'Cancel',

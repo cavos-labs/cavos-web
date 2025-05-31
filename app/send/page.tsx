@@ -5,10 +5,8 @@ import { useRouter } from 'next/navigation';
 import { FiArrowLeft, FiAlertTriangle } from 'react-icons/fi';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-
 import { useAtomValue } from 'jotai';
 import { useUserWallet } from '../lib/atoms/userWallet';
-import { getWalletBalance } from '../lib/utils';
 import axios from 'axios';
 import { supabase } from '../lib/supabase';
 import AlertModal from '../modals/AlertModal';
@@ -36,11 +34,16 @@ export default function Send() {
 		async function getAccountInfo() {
 			try {
 				if (wallet?.address) {
-					const newBalance = await getWalletBalance(wallet.address);
+					const address = wallet.address;
+					const response = await axios.post(`/api/cavos/balance`, {
+						address,
+					});
+					const newBalance = response.data.data;
 					setBalance(newBalance.balance);
 				}
 			} catch (error) {
 				console.error('Error fetching balance:', error);
+				setBalance(0);
 			}
 		}
 
@@ -139,29 +142,17 @@ export default function Send() {
 
 				try {
 					if (wallet) {
-						const response = await axios.post(
-							process.env.NEXT_PUBLIC_WALLET_PROVIDER_API +
-								'wallet/send',
-							{
-								amount: amount,
-								address: wallet.address,
-								hashedPk: wallet.private_key,
-								hashedPin: wallet.pin,
-								receiverAddress: recipientAddress,
-							},
-							{
-								headers: {
-									'Content-Type': 'application/json',
-									Authorization: `Bearer ${process.env.NEXT_PUBLIC_WALLET_PROVIDER_TOKEN}`,
-								},
-							}
-						);
+						const response = await axios.post(`/api/cavos/send`, {
+							amount,
+							wallet,
+							recipientAddress,
+						});
 
-						if (!response.data.result) {
+						if (!response.data.data.result) {
 							throw new Error('Transaction failed');
 						}
 
-						const txHash = response.data.result;
+						const txHash = response.data.data.result;
 
 						const { error: txError } = await supabase
 							.from('transaction')
