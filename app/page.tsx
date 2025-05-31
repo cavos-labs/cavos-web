@@ -1,6 +1,6 @@
 'use client';
 import { useRef, useState } from 'react';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import Header from './components/Header';
@@ -36,149 +36,386 @@ export default function Home() {
 
 	return (
 		<>
-			<div className="min-h-screen p-4 md:p-10 lg:p-20 text-white">
-				<main className="container mx-auto px-4 py-4 md:py-8">
-					<Header />
-
+			<div className="min-h-screen">
+				<Header />
+				<main className="container mx-auto px-4 py-8 max-w-6xl">
 					{/* Hero Section */}
-					<section className="relative overflow-hidden">
+					<section className="text-center py-16 md:py-24">
 						<motion.div
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ duration: 0.7, delay: 0.2 }}
-							className="mb-8 md:mb-12"
+							className="mb-12"
 						>
-							<h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-6 md:mb-10 leading-tight">
-								INVEST YOUR CRYPTO{' '}
-								<br className="hidden sm:block" /> SMARTLY
+							<h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight tracking-wide">
+								BANKING, WITHOUT A BANK
 							</h1>
-							<p className="text-base md:text-lg mb-4 md:mb-6">
-								Invest stable coins on the cheapest and fastest
-								chain.
-							</p>
+							<h2 className="text-xl md:text-3xl mb-8 font-medium tracking-wide">
+								INVEST IN CRYPTO THE SMART WAY
+							</h2>
 							<button
 								onClick={scrollToWaitlist}
-								className="border border-[#FFFFE3] px-4 py-1 md:px-6 md:py-2 hover:bg-[#FFFFE3] hover:text-[#11110E] transition-colors duration-500 cursor-pointer text-sm md:text-base"
+								className="border-2 border-white px-8 py-3 md:px-10 md:py-4 hover:bg-white hover:text-black transition-all duration-300 cursor-pointer text-lg font-medium tracking-wide"
 							>
-								Join Waitlist
+								Join the waitlist
 							</button>
 						</motion.div>
-
-						{/* Lightning Background */}
-						<Image
-							src="/images/Lightning.svg"
-							alt="Lightning background"
-							fill
-							className="object-cover object-right -z-10 md:block"
-							quality={100}
-							priority
-						/>
 
 						{/* Visa Card */}
 						<motion.div
 							initial={{ opacity: 0, y: 30 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ duration: 0.8, delay: 0.6 }}
-							className="my-8 md:my-12 flex justify-center"
+							className="mt-16 flex justify-center"
 						>
-							<div className="relative w-full max-w-[350px] sm:max-w-[450px] md:w-[575px] h-[200px] sm:h-[250px] md:h-[290px] bg-black rounded-xl overflow-hidden border border-[#FFFFE3]">
-								<div className="absolute top-4 left-4 md:top-6 md:left-6">
-									<Image
-										src="/images/CavosLogo.png"
-										alt="Cavos Logo"
-										width={30}
-										height={30}
-										className="md:w-10 md:h-10"
-									/>
-								</div>
-								<div className="absolute bottom-4 right-4 md:bottom-6 md:right-6">
-									<Image
-										src="/images/Visa.png"
-										alt="Visa"
-										width={50}
-										height={16}
-										className="md:w-16 md:h-6"
-									/>
-								</div>
-								<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-full px-4">
-									<p className="text-[#FFFFE3] text-sm md:text-base">
-										Cavos card coming soon...
-									</p>
-								</div>
-							</div>
-						</motion.div>
-					</section>
-
-					{/* Features Section */}
-					<section className="py-8 md:py-12 flex flex-col md:flex-row gap-8 md:gap-12 items-center">
-						<motion.div
-							initial={{ opacity: 0, x: -20 }}
-							whileInView={{ opacity: 1, x: 0 }}
-							transition={{ duration: 0.7 }}
-							className="flex-1 order-2 md:order-1"
-						>
-							<ul className="space-y-4 md:space-y-8">
-								<li>
-									<h3 className="text-lg md:text-xl mb-2">
-										Create an smart crypto wallet once you
-										register.
-									</h3>
-								</li>
-								<li>
-									<h3 className="text-lg md:text-xl mb-2">
-										Fund your wallet with stable coins.
-									</h3>
-								</li>
-								<li>
-									<h3 className="text-lg md:text-xl mb-2">
-										Invest in one of the best DeFi protocols
-										on Starknet
-									</h3>
-								</li>
-							</ul>
-						</motion.div>
-
-						<motion.div
-							initial={{ opacity: 0, x: 20 }}
-							whileInView={{ opacity: 1, x: 0 }}
-							transition={{ duration: 0.7, delay: 0.2 }}
-							className="flex-1 flex justify-center order-1 md:order-2"
-						>
-							<div className="relative w-[180px] h-[350px] md:w-[230px] md:h-[450px]">
+							<div className="relative w-full max-w-[400px] sm:max-w-[500px] md:max-w-[600px] lg:max-w-[700px] h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px]">
 								<Image
-									src="/images/Prototype.png"
-									alt="iPhone App Prototype"
+									src="/images/CavosCard.png"
+									alt="Cavos Card"
 									layout="fill"
 									objectFit="contain"
+									className="drop-shadow-2xl"
 								/>
 							</div>
 						</motion.div>
 					</section>
 
-					{/* Built on Starknet */}
-					<motion.section
-						initial={{ opacity: 0, y: 20 }}
-						whileInView={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.7 }}
-						className="py-8 md:py-16"
-					>
-						<h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">
-							BUILT ON STARKNET
-						</h2>
-						<p className="text-base md:text-lg mb-6 md:mb-8">
-							The cheapest and fastest layer 2 solution. Adapt to
-							blockchain like never before.
-						</p>
-
-						<div className="flex flex-wrap gap-2 md:gap-4">
-							<button className="border border-[#FFFFE3] px-4 py-1 md:px-6 md:py-2 hover:bg-[#FFFFE3] hover:text-[#11110E] transition-colors text-sm md:text-base">
-								10x Cheaper
-							</button>
-							<button className="border border-[#FFFFE3] px-4 py-1 md:px-6 md:py-2 hover:bg-[#FFFFE3] hover:text-[#11110E] transition-colors text-sm md:text-base">
-								10x Faster
-							</button>
+					{/* Features Section */}
+					<section className="py-20 md:py-32">
+						<div className="text-center mb-16 md:mb-20">
+							<motion.h2
+								initial={{ opacity: 0, y: 20 }}
+								whileInView={{ opacity: 1, y: 0 }}
+								transition={{ duration: 0.7 }}
+								className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-wide"
+							>
+								EVERYTHING YOU NEED
+							</motion.h2>
+							<motion.p
+								initial={{ opacity: 0, y: 20 }}
+								whileInView={{ opacity: 1, y: 0 }}
+								transition={{ duration: 0.7, delay: 0.2 }}
+								className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto"
+							>
+								All-in-one crypto banking solution for the
+								modern world
+							</motion.p>
 						</div>
-					</motion.section>
+
+						<div className="flex flex-col lg:flex-row gap-16 lg:gap-20 items-center">
+							<motion.div
+								initial={{ opacity: 0, x: -30 }}
+								whileInView={{ opacity: 1, x: 0 }}
+								transition={{ duration: 0.8 }}
+								className="flex-1 order-2 lg:order-1"
+							>
+								<div className="grid gap-8 md:gap-10">
+									{[
+										{
+											title: 'Invest stable coins',
+											subtitle: 'Secure wealth growth',
+											delay: 0,
+										},
+										{
+											title: 'Send payments to Cavos users via username/phone number',
+											subtitle: 'Instant transfers',
+											delay: 0.1,
+										},
+										{
+											title: 'QR payments',
+											subtitle: 'Scan and pay anywhere',
+											delay: 0.2,
+										},
+										{
+											title: 'Virtual cards in minutes',
+											subtitle: 'Instant card generation',
+											delay: 0.3,
+										},
+										{
+											title: 'Buy, sell and invest in BTC with just one click',
+											subtitle:
+												'Seamless Bitcoin trading',
+											delay: 0.4,
+										},
+									].map((feature, index) => (
+										<motion.div
+											key={index}
+											initial={{ opacity: 0, x: -20 }}
+											whileInView={{ opacity: 1, x: 0 }}
+											transition={{
+												duration: 0.6,
+												delay: feature.delay,
+											}}
+											whileHover={{
+												x: 20,
+												transition: { duration: 0.3 },
+											}}
+											className="group relative"
+										>
+											{/* Background line that extends on hover */}
+											<div className="absolute left-0 top-0 bottom-0 w-0 group-hover:w-full bg-gradient-to-r from-white/5 to-transparent transition-all duration-500 ease-out"></div>
+
+											{/* Animated dot */}
+											<div className="flex items-start space-x-6">
+												<motion.div
+													className="relative mt-3 flex-shrink-0"
+													whileHover={{ scale: 1.5 }}
+													transition={{
+														duration: 0.2,
+													}}
+												>
+													<div className="w-3 h-3 bg-white rounded-full relative z-10"></div>
+													<motion.div
+														className="absolute inset-0 bg-white rounded-full opacity-30"
+														animate={{
+															scale: [1, 1.8, 1],
+															opacity: [
+																0.3, 0, 0.3,
+															],
+														}}
+														transition={{
+															duration: 2,
+															repeat: Infinity,
+															delay: index * 0.2,
+														}}
+													></motion.div>
+												</motion.div>
+
+												<div className="flex-1 relative z-10">
+													<motion.h3
+														className="text-xl md:text-2xl lg:text-3xl font-medium leading-relaxed mb-2 group-hover:text-white transition-colors duration-300"
+														initial={{
+															opacity: 0.9,
+														}}
+														whileHover={{
+															opacity: 1,
+														}}
+													>
+														{feature.title}
+													</motion.h3>
+													<motion.p className="text-white/60 text-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+														{feature.subtitle}
+													</motion.p>
+												</div>
+
+												{/* Arrow that appears on hover */}
+												<motion.div
+													className="opacity-0 group-hover:opacity-100 transition-all duration-300 mt-3"
+													initial={{ x: -10 }}
+													whileHover={{ x: 0 }}
+												>
+													<svg
+														className="w-6 h-6 text-white/60"
+														fill="none"
+														stroke="currentColor"
+														viewBox="0 0 24 24"
+													>
+														<path
+															strokeLinecap="round"
+															strokeLinejoin="round"
+															strokeWidth={2}
+															d="M9 5l7 7-7 7"
+														/>
+													</svg>
+												</motion.div>
+											</div>
+										</motion.div>
+									))}
+								</div>
+
+								{/* Feature count indicator */}
+								<motion.div
+									initial={{ opacity: 0, y: 20 }}
+									whileInView={{ opacity: 1, y: 0 }}
+									transition={{ duration: 0.6, delay: 0.8 }}
+									className="mt-16 flex items-center justify-between border-t border-white/10 pt-8"
+								>
+									<div className="flex items-center space-x-4">
+										<div className="flex space-x-1">
+											{[...Array(5)].map((_, i) => (
+												<motion.div
+													key={i}
+													className="w-2 h-2 bg-white rounded-full"
+													initial={{ opacity: 0.3 }}
+													animate={{
+														opacity: [0.3, 1, 0.3],
+													}}
+													transition={{
+														duration: 2,
+														repeat: Infinity,
+														delay: i * 0.2,
+													}}
+												></motion.div>
+											))}
+										</div>
+										<span className="text-white/60 text-sm tracking-wider">
+											5 CORE FEATURES
+										</span>
+									</div>
+									<div className="text-white/40 text-sm font-medium">
+										MORE COMING SOON
+									</div>
+								</motion.div>
+							</motion.div>
+
+							<motion.div
+								initial={{ opacity: 0, x: 30 }}
+								whileInView={{ opacity: 1, x: 0 }}
+								transition={{ duration: 0.8, delay: 0.3 }}
+								className="flex-1 flex justify-center order-1 lg:order-2 relative"
+							>
+								{/* Floating connection lines */}
+								<div className="absolute inset-0 overflow-hidden pointer-events-none">
+									{[...Array(3)].map((_, i) => (
+										<motion.div
+											key={i}
+											className="absolute w-px bg-gradient-to-b from-transparent via-white/20 to-transparent"
+											style={{
+												left: `${20 + i * 30}%`,
+												height: '60%',
+												top: '20%',
+											}}
+											initial={{ opacity: 0, scaleY: 0 }}
+											whileInView={{
+												opacity: 1,
+												scaleY: 1,
+											}}
+											transition={{
+												duration: 1.5,
+												delay: i * 0.3,
+												ease: 'easeOut',
+											}}
+										></motion.div>
+									))}
+								</div>
+
+								{/* Phone mockup with subtle animations */}
+								<motion.div
+									className="relative w-[250px] h-[500px] md:w-[300px] md:h-[600px] lg:w-[350px] lg:h-[700px]"
+									whileHover={{
+										y: -10,
+										transition: {
+											duration: 0.4,
+											ease: 'easeOut',
+										},
+									}}
+								>
+									{/* Subtle glow effect */}
+									<motion.div
+										className="absolute inset-0 bg-white/5 blur-3xl scale-105 opacity-0"
+										whileHover={{ opacity: 1 }}
+										transition={{ duration: 0.4 }}
+									></motion.div>
+
+									<Image
+										src="/images/Prototype.png"
+										alt="iPhone App Prototype"
+										layout="fill"
+										objectFit="contain"
+										className="drop-shadow-2xl relative z-10"
+									/>
+
+									{/* Floating data points */}
+									{[
+										{ top: '15%', right: '-10%', delay: 0 },
+										{ top: '45%', left: '-8%', delay: 1 },
+										{
+											bottom: '25%',
+											right: '-12%',
+											delay: 2,
+										},
+									].map((point, i) => (
+										<motion.div
+											key={i}
+											className="absolute w-2 h-2 bg-white rounded-full opacity-60"
+											style={{ ...point }}
+											animate={{
+												scale: [1, 1.5, 1],
+												opacity: [0.6, 1, 0.6],
+											}}
+											transition={{
+												duration: 3,
+												repeat: Infinity,
+												delay: point.delay,
+											}}
+										></motion.div>
+									))}
+								</motion.div>
+							</motion.div>
+						</div>
+					</section>
+
+					{/* Built on Starknet */}
+					<section className="py-20 md:py-32">
+						<div className="text-center mb-16 md:mb-20">
+							<motion.h2
+								initial={{ opacity: 0, y: 20 }}
+								whileInView={{ opacity: 1, y: 0 }}
+								transition={{ duration: 0.7 }}
+								className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-wide"
+							>
+								BUILT WITH MODERN TECH
+							</motion.h2>
+							<motion.p
+								initial={{ opacity: 0, y: 20 }}
+								whileInView={{ opacity: 1, y: 0 }}
+								transition={{ duration: 0.7, delay: 0.2 }}
+								className="text-xl md:text-2xl text-white/80 max-w-4xl mx-auto leading-relaxed"
+							>
+								Leveraging cutting-edge blockchain technologies
+								for maximum performance, security, and
+								lightning-fast transactions
+							</motion.p>
+						</div>
+
+						<div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 max-w-6xl mx-auto mb-16">
+							{[
+								{
+									name: 'Starknet',
+									logo: '/images/starknet-logo.svg',
+									description:
+										'Lightning-fast L2 scaling solution',
+								},
+								{
+									name: 'Argent',
+									logo: '/images/ArgentLogo.svg',
+									description: 'Smart wallet infrastructure',
+								},
+								{
+									name: 'AVNU',
+									logo: '/images/AVNULogo.svg',
+									description: 'DEX aggregation protocol',
+								},
+							].map((tech, index) => (
+								<motion.div
+									key={index}
+									initial={{ opacity: 0, y: 30 }}
+									whileInView={{ opacity: 1, y: 0 }}
+									transition={{
+										duration: 0.6,
+										delay: index * 0.2,
+									}}
+									whileHover={{ scale: 1.05, y: -10 }}
+									className="flex flex-col items-center text-center p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300"
+								>
+									<div className="relative w-24 h-24 md:w-32 md:h-32 mb-6">
+										<Image
+											src={tech.logo}
+											alt={tech.name}
+											layout="fill"
+											className="object-contain filter brightness-90 hover:brightness-100 transition-all duration-300"
+										/>
+									</div>
+									<h3 className="text-2xl md:text-3xl font-bold mb-3">
+										{tech.name}
+									</h3>
+									<p className="text-white/70 text-lg">
+										{tech.description}
+									</p>
+								</motion.div>
+							))}
+						</div>
+					</section>
 
 					{/* Waitlist Section */}
 					<motion.section
@@ -186,51 +423,78 @@ export default function Home() {
 						initial={{ opacity: 0 }}
 						whileInView={{ opacity: 1 }}
 						transition={{ duration: 0.7 }}
-						className="py-8 md:py-16 border-t border-[#FFFFE3]/20"
+						className="py-20 md:py-32 border-t border-white/20"
 					>
-						<h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">
-							JOIN THE WAITLIST
-						</h2>
-						<p className="text-base md:text-lg mb-6 md:mb-8">
-							Be the first to get access when we launch.
-						</p>
+						<div className="text-center mb-12 md:mb-16">
+							<motion.h2
+								initial={{ opacity: 0, y: 20 }}
+								whileInView={{ opacity: 1, y: 0 }}
+								transition={{ duration: 0.7 }}
+								className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-wide"
+							>
+								JOIN THE WAITLIST
+							</motion.h2>
+							<motion.p
+								initial={{ opacity: 0, y: 20 }}
+								whileInView={{ opacity: 1, y: 0 }}
+								transition={{ duration: 0.7, delay: 0.2 }}
+								className="text-xl md:text-2xl font-medium max-w-3xl mx-auto text-white/80 leading-relaxed"
+							>
+								Be the first to experience the future of crypto
+								banking. Get exclusive early access when we
+								launch.
+							</motion.p>
+						</div>
 
-						<form onSubmit={handleSubmit} className="max-w-md">
-							<div className="flex flex-col sm:flex-row gap-3 md:gap-4">
-								<input
-									type="email"
-									placeholder="Your email address"
-									className="flex-1 bg-transparent border border-[#FFFFE3] px-3 py-1 md:px-4 md:py-2 focus:outline-none text-sm md:text-base"
-									value={email}
-									onChange={(e) => setEmail(e.target.value)}
-									required
-								/>
-								<motion.button
-									whileTap={{ scale: 0.95 }}
-									disabled={submitted || loading}
-									className={`bg-[#FFFFE3] text-[#11110E] px-4 py-1 md:px-6 md:py-2 font-medium cursor-pointer text-sm md:text-base ${
-										submitted || loading ? 'opacity-70' : ''
-									}`}
-									type="submit"
-								>
-									{loading
-										? 'Loading...'
-										: submitted
-											? 'Thanks!'
-											: 'Join Now'}
-								</motion.button>
-							</div>
-							{submitted && (
-								<p className="mt-3 md:mt-5 text-sm md:text-base">
-									We received your email and will let you know
-									once Cavos is ready!
-								</p>
-							)}
-						</form>
+						<motion.div
+							initial={{ opacity: 0, y: 30 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.8, delay: 0.4 }}
+							className="max-w-2xl mx-auto"
+						>
+							<form onSubmit={handleSubmit} className="space-y-6">
+								<div className="flex flex-col sm:flex-row gap-4 md:gap-6">
+									<input
+										type="email"
+										placeholder="Enter your email address"
+										className="flex-1 bg-white/5 backdrop-blur-sm border-2 border-white/20 px-6 py-4 md:px-8 md:py-5 focus:outline-none focus:border-white/60 focus:bg-white/10 text-lg md:text-xl placeholder-white/50 rounded-xl transition-all duration-300"
+										value={email}
+										onChange={(e) =>
+											setEmail(e.target.value)
+										}
+										required
+									/>
+									<motion.button
+										whileTap={{ scale: 0.95 }}
+										disabled={submitted || loading}
+										type="submit"
+									>
+										{loading
+											? 'Joining...'
+											: submitted
+												? 'Welcome!'
+												: 'Join Now'}
+									</motion.button>
+								</div>
+								{submitted && (
+									<motion.div
+										initial={{ opacity: 0, y: 10 }}
+										animate={{ opacity: 1, y: 0 }}
+										className="text-center p-6 bg-green-500/10 border border-green-500/20 rounded-xl backdrop-blur-sm"
+									>
+										<p className="text-lg md:text-xl font-medium text-green-400">
+											You're in! We'll notify you as soon
+											as Cavos is ready to launch.
+										</p>
+									</motion.div>
+								)}
+							</form>
+						</motion.div>
 					</motion.section>
 				</main>
+
+				<Footer />
 			</div>
-			<Footer />
 		</>
 	);
 }

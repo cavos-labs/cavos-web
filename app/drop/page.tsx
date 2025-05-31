@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import Header from '../components/Header';

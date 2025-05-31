@@ -9,6 +9,98 @@ export type Json =
 export type Database = {
 	public: {
 		Tables: {
+			card_waitlist: {
+				Row: {
+					country: string;
+					created_at: string;
+					email: string;
+					id: number;
+				};
+				Insert: {
+					country: string;
+					created_at?: string;
+					email: string;
+					id?: number;
+				};
+				Update: {
+					country?: string;
+					created_at?: string;
+					email?: string;
+					id?: number;
+				};
+				Relationships: [];
+			};
+			external_wallet: {
+				Row: {
+					address: string;
+					created_at: string;
+					id: number;
+					network: string;
+					org_id: number;
+					private_key: string;
+					public_key: string;
+				};
+				Insert: {
+					address: string;
+					created_at?: string;
+					id?: number;
+					network: string;
+					org_id: number;
+					private_key: string;
+					public_key: string;
+				};
+				Update: {
+					address?: string;
+					created_at?: string;
+					id?: number;
+					network?: string;
+					org_id?: number;
+					private_key?: string;
+					public_key?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: 'external_wallet_org_id_fkey';
+						columns: ['org_id'];
+						isOneToOne: false;
+						referencedRelation: 'org';
+						referencedColumns: ['id'];
+					},
+				];
+			};
+			org: {
+				Row: {
+					created_at: string;
+					email: string;
+					hash_secret: string;
+					id: number;
+					name: string;
+					plan_id: string | null;
+					secret: string;
+					uid: string | null;
+				};
+				Insert: {
+					created_at?: string;
+					email: string;
+					hash_secret: string;
+					id?: number;
+					name: string;
+					plan_id?: string | null;
+					secret: string;
+					uid?: string | null;
+				};
+				Update: {
+					created_at?: string;
+					email?: string;
+					hash_secret?: string;
+					id?: number;
+					name?: string;
+					plan_id?: string | null;
+					secret?: string;
+					uid?: string | null;
+				};
+				Relationships: [];
+			};
 			transaction: {
 				Row: {
 					amount: number;
