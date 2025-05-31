@@ -1,19 +1,7 @@
 import type React from 'react';
 import type { Metadata } from 'next';
-import { Inter, Space_Mono } from 'next/font/google';
 import './globals.css';
-import { satoshi } from './lib/fonts';
-
-const inter = Inter({
-	subsets: ['latin'],
-	variable: '--font-inter',
-});
-
-const spaceMono = Space_Mono({
-	weight: ['400', '700'],
-	subsets: ['latin'],
-	variable: '--font-space-mono',
-});
+import { ramagothicbold, roboto } from './lib/fonts';
 
 export const metadata: Metadata = {
 	title: 'Cavos',
@@ -27,7 +15,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" suppressHydrationWarning>
-			<body className={`${satoshi.className} bg-[#11110E] text-white`}>
+			<body
+				className={`${ramagothicbold.variable} ${roboto.variable} bg-[#000] text-[#EAE5DC]`}
+			>
 				{children}
 			</body>
 		</html>

@@ -1,7 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import { supabase } from '../lib/supabase';
 import { useUserWallet } from '../lib/atoms/userWallet';
 import { useAtom, useSetAtom } from 'jotai';
