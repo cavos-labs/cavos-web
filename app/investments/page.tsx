@@ -43,9 +43,7 @@ export default function Investments() {
 					);
 					const apyResponse = await axios.post(
 						`/api/cavos/vesu/apy`,
-						{
-							wallet,
-						}
+						{}
 					);
 					setApy(apyResponse.data.data.poolAPY);
 					setTotalInvested(positionResponse.data.data.total_supplied);
