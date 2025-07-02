@@ -10,7 +10,9 @@ const supabase = createClient<Database>(
 export async function POST(req: Request) {
 	try {
 		const { email, country } = await req.json();
-		const { error } = await supabase.from('card_waitlist').insert({ email, country });
+		const { error } = await supabase
+			.from('card_waitlist')
+			.insert({ email, country });
 		console.log('error', error);
 		return NextResponse.json({ data: error }, { status: 200 });
 	} catch (error: any) {

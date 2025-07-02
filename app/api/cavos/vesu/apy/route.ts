@@ -7,6 +7,7 @@ export async function POST(req: Request) {
 			process.env.WALLET_PROVIDER_API + 'vesu/pool/apy',
 			{
 				poolName: 'Re7 USDC',
+				assetSymbol: 'USDC',
 			},
 			{
 				headers: {
