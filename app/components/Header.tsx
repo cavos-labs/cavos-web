@@ -1,129 +1,121 @@
 'use client';
-
-import { motion } from 'framer-motion';
 import Image from 'next/legacy/image';
-import Link from 'next/link';
 import { useState } from 'react';
-import LoginModal from '../modals/Login';
-import { useAtom } from 'jotai';
-import { useUserWallet } from '../lib/atoms/userWallet';
 
-function Header() {
-	const [isLoginOpen, setIsLoginOpen] = useState(false);
-	const [userWallet] = useAtom(useUserWallet);
+function Header({ scrollToWaitlist }: { scrollToWaitlist: () => void }) {
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+	const toggleMenu = () => {
+		setIsMenuOpen(!isMenuOpen);
+	};
+
+	const closeMenu = () => {
+		setIsMenuOpen(false);
+	};
 
 	return (
 		<>
-			<header className="w-full fixed top-0 left-0 z-50 px-4 py-4 md:px-8 md:py-6">
-				<div className="container mx-auto max-w-6xl">
-					<motion.div
-						initial={{ opacity: 0, y: -20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.6 }}
-						className="bg-[#2A2A2A]/90 backdrop-blur-md rounded-2xl px-6 py-2 md:px-8 md:py-3 border border-gray-700/50"
-					>
-						<div className="flex items-center justify-between">
-							{/* Logo */}
-							<motion.div
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								transition={{ duration: 0.5, delay: 0.2 }}
-								className="flex items-center"
-							>
-								<Link href="/">
-									<Image
-										src="/images/CavosLogo.png"
-										alt="Cavos Logo"
-										width={28}
-										height={34}
-										className="cursor-pointer"
-									/>
-								</Link>
-							</motion.div>
-
-							{/* Navigation Links */}
-							<nav className="hidden md:flex items-center space-x-8 lg:space-x-12">
-								{/* <Link href="/dashboard">
-									<motion.span
-										whileHover={{ scale: 1.05 }}
-										whileTap={{ scale: 0.95 }}
-										className="text-white/90 hover:text-white transition-colors duration-300 cursor-pointer text-lg font-medium"
-									>
-										Dashboard
-									</motion.span>
-								</Link> */}
-								<Link href="/card/waitlist">
-									<motion.span
-										whileTap={{ scale: 0.95 }}
-										className="hover:text-white transition-colors duration-300 cursor-pointer text-lg font-medium"
-									>
-										<svg
-											className="w-7 h-7"
-											fill="none"
-											stroke="currentColor"
-											viewBox="0 0 25 25"
-										>
-											<path
-												d="M4.5 10.5H20.5M4.5 9.5H20.5M4.5 11.5H20.5M7 15.5H14M5.5 18.5H19.5C20.0523 18.5 20.5 18.0523 20.5 17.5V7.5C20.5 6.94772 20.0523 6.5 19.5 6.5H5.5C4.94772 6.5 4.5 6.94772 4.5 7.5V17.5C4.5 18.0523 4.94772 18.5 5.5 18.5Z"
-												stroke="currentColor"
-												strokeWidth="1.2"
-											/>
-										</svg>
-									</motion.span>
-								</Link>
-								{/* <Link href="/investments">
-									<motion.span
-										whileHover={{ scale: 1.05 }}
-										whileTap={{ scale: 0.95 }}
-										className="text-white/90 hover:text-white transition-colors duration-300 cursor-pointer text-lg font-medium"
-									>
-										Investments
-									</motion.span>
-								</Link> */}
-							</nav>
-
-							{/* Login Button */}
-							{/* <div className="flex items-center">
-								{userWallet ? (
-									<UserDropdown />
-								) : (
-									<motion.button
-										whileHover={{ scale: 1.05 }}
-										whileTap={{ scale: 0.95 }}
-										onClick={() => setIsLoginOpen(true)}
-										className={"border-2 border-white px-6 py-2 md:px-8 md:py-3 hover:bg-white hover:text-black transition-all duration-300 cursor-pointer text-lg font-medium tracking-wide rounded-xl" }
-									>
-										LOGIN
-									</motion.button>
-								)}
-							</div> */}
-
-							{/* Mobile Menu Button */}
-							<div className="md:hidden">
-								<button className="text-white p-2">
-									<svg
-										className="w-6 h-6"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
-										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											strokeWidth={2}
-											d="M4 6h16M4 12h16M4 18h16"
-										/>
-									</svg>
-								</button>
-							</div>
-						</div>
-					</motion.div>
+			<header className="container mx-auto px-6 py-6 flex justify-between items-center backdrop-blur-sm relative z-50">
+				<div className="flex items-center gap-2">
+					<div className="relative">
+						<Image src="/images/CavosLogo.png" alt="Cavos" width={26} height={32} />
+					</div>
+					<h1 className="font-bold text-3xl text-[#EAE5DC] tracking-tight">CAVOS</h1>
 				</div>
+
+				{/* Desktop Navigation */}
+				<nav className="hidden md:flex items-center gap-8">
+					<a href="/" className="hover:text-[#EAE5DC] transition-all duration-300 relative group">
+						Home
+						<span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#EAE5DC] transition-all duration-300 group-hover:w-full"></span>
+					</a>
+					<a href="/card/waitlist" className="hover:text-[#EAE5DC] transition-all duration-300 relative group">
+						Card
+						<span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#EAE5DC] transition-all duration-300 group-hover:w-full"></span>
+					</a>
+					<a href="https://services.cavos.xyz/" target="_blank" className="hover:text-[#EAE5DC] transition-all duration-300 relative group">
+						Services
+						<span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#EAE5DC] transition-all duration-300 group-hover:w-full"></span>
+					</a>
+					<a href="#" className="hover:text-[#EAE5DC] transition-all duration-300 relative group">
+						Merchants
+						<span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#EAE5DC] transition-all duration-300 group-hover:w-full"></span>
+					</a>
+				</nav>
+
+				{/* Desktop Early Access Button */}
+				<button
+					onClick={scrollToWaitlist}
+					className="hidden md:flex border-2 border-[#EAE5DC] px-8 py-4 text-lg rounded-lg hover:bg-[#EAE5DC]/10 hover:scale-105 transition-all duration-300 items-center justify-center gap-2 backdrop-blur-sm">
+					Early Access
+				</button>
+
+				{/* Mobile Hamburger Button */}
+				<button
+					onClick={toggleMenu}
+					className="md:hidden flex flex-col gap-1.5 p-2 transition-all duration-300 hamburger"
+					aria-label="Toggle menu">
+					<span className={`w-6 h-0.5 bg-[#EAE5DC] transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
+					<span className={`w-6 h-0.5 bg-[#EAE5DC] transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''}`}></span>
+					<span className={`w-6 h-0.5 bg-[#EAE5DC] transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+				</button>
 			</header>
-			<LoginModal
-				isOpen={isLoginOpen}
-				onClose={() => setIsLoginOpen(false)}
-			/>
+
+			{/* Mobile Menu Overlay */}
+			<div 
+				className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300 ${
+					isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+				}`}
+				onClick={closeMenu}
+			></div>
+
+			{/* Mobile Menu Panel */}
+			<div className={`fixed top-0 right-0 h-full w-80 max-w-[80vw] bg-gradient-to-b from-black/95 to-black/90 backdrop-blur-xl z-50 md:hidden transition-transform duration-300 ease-in-out ${
+				isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+			}`}>
+				<div className="flex flex-col h-full">
+					{/* Close Button */}
+					<div className="flex justify-end p-6">
+						<button
+							onClick={closeMenu}
+							className="p-2 hover:bg-white/10 rounded-lg transition-colors duration-200 hamburger"
+							aria-label="Close menu">
+							<svg className="w-6 h-6 text-[#EAE5DC]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+							</svg>
+						</button>
+					</div>
+
+					{/* Navigation Links */}
+					<nav className="flex flex-col gap-2 px-6 py-4">
+						<a 
+							href="/" 
+							onClick={closeMenu}
+							className="text-[#EAE5DC] text-xl py-4 px-4 rounded-lg hover:bg-white/10 transition-all duration-200 border-b border-white/10">
+							Home
+						</a>
+						<a 
+							href="/card/waitlist" 
+							onClick={closeMenu}
+							className="text-[#EAE5DC] text-xl py-4 px-4 rounded-lg hover:bg-white/10 transition-all duration-200 border-b border-white/10">
+							Card
+						</a>
+						<a 
+							href="https://services.cavos.xyz/" 
+							target="_blank"
+							onClick={closeMenu}
+							className="text-[#EAE5DC] text-xl py-4 px-4 rounded-lg hover:bg-white/10 transition-all duration-200 border-b border-white/10">
+							Services
+						</a>
+						<a 
+							href="#" 
+							onClick={closeMenu}
+							className="text-[#EAE5DC] text-xl py-4 px-4 rounded-lg hover:bg-white/10 transition-all duration-200 border-b border-white/10">
+							Merchants
+						</a>
+					</nav>
+				</div>
+			</div>
 		</>
 	);
 }
