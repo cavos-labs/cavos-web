@@ -1,9 +1,15 @@
 'use client';
 import Image from 'next/legacy/image';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-function Header({ scrollToWaitlist }: { scrollToWaitlist: () => void }) {
+type HeaderProps = {
+	scrollToWaitlist?: () => void;
+};
+
+function Header({ scrollToWaitlist }: HeaderProps) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const router = useRouter();
 
 	const toggleMenu = () => {
 		setIsMenuOpen(!isMenuOpen);
@@ -45,8 +51,9 @@ function Header({ scrollToWaitlist }: { scrollToWaitlist: () => void }) {
 
 				{/* Desktop Early Access Button */}
 				<button
-					onClick={scrollToWaitlist}
-					className="hidden md:flex border-2 border-[#EAE5DC] px-8 py-4 text-lg rounded-lg hover:bg-[#EAE5DC]/10 hover:scale-105 transition-all duration-300 items-center justify-center gap-2 backdrop-blur-sm">
+					onClick={scrollToWaitlist ? scrollToWaitlist : () => router.push('/')}
+					className="hidden md:flex border-2 border-[#EAE5DC] px-8 py-4 text-lg rounded-lg hover:bg-[#EAE5DC]/10 hover:scale-105 transition-all duration-300 items-center justify-center gap-2 backdrop-blur-sm"
+				>
 					Early Access
 				</button>
 
