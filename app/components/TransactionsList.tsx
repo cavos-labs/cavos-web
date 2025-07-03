@@ -7,10 +7,34 @@ import { useUserWallet } from '../lib/atoms/userWallet';
 import { useUserId } from '../lib/atoms/userId';
 import { useAtomValue } from 'jotai';
 import { Transaction } from '../lib/types/Transaction';
+import TransactionDetailsModal from '../modals/TransactionDetailsModal';
+import axios from 'axios';
+
+// Definir el tipo para los detalles de transacción
+interface TransactionDetails {
+	transfers: {
+		tokenTransfers: Array<{
+			token: string;
+			amount: string;
+			from: string;
+			to: string;
+		}>;
+		events: Array<{
+			name: string;
+			timestamp: number;
+			from: string;
+			contractAlias?: string;
+		}>;
+	};
+}
 
 const TransactionsList = () => {
 	const [transactions, setTransactions] = useState<Transaction[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const [showTransactionDetails, setShowTransactionDetails] = useState(false);
+	const [selectedTxDetails, setSelectedTxDetails] =
+		useState<TransactionDetails | null>(null);
+	const [isLoadingDetails, setIsLoadingDetails] = useState(false);
 	const wallet = useAtomValue(useUserWallet);
 	const userId = useAtomValue(useUserId);
 
@@ -44,6 +68,20 @@ const TransactionsList = () => {
 			fetchTransactions();
 		}
 	}, [wallet, userId]);
+
+	const fetchTransactionDetails = async (
+		txHash: string
+	): Promise<TransactionDetails | null> => {
+		try {
+			const response = await axios.post('/api/cavos/transactionDetails', {
+				txHash,
+			});
+			return response.data.data;
+		} catch (error) {
+			console.error('fetchTransactionDetails error:', error);
+			return null;
+		}
+	};
 
 	const getTransactionIcon = (type: string) => {
 		if (type === 'Deposit' || type === 'Account Creation') {
@@ -99,11 +137,17 @@ const TransactionsList = () => {
 		return hash.slice(0, 4) + '...' + hash.slice(-4);
 	};
 
-	const generateExplorerUrl = (tx: Transaction) => {
-		if (tx.type === 'Account Creation' && wallet) {
-			return `https://voyager.online/contract/${wallet.address}`;
-		} else {
-			return `https://voyager.online/tx/${tx.tx_hash}`;
+	const handleTransactionClick = async (tx: Transaction) => {
+		if (tx.tx_hash) {
+			setIsLoadingDetails(true);
+			const details = await fetchTransactionDetails(tx.tx_hash);
+			if (details) {
+				setSelectedTxDetails(details);
+				setShowTransactionDetails(true);
+			} else {
+				console.error('Could not fetch transaction details.');
+			}
+			setIsLoadingDetails(false);
 		}
 	};
 
@@ -118,7 +162,7 @@ const TransactionsList = () => {
 				<h2 className="text-xl font-bold text-[#FFFFE3]">
 					TRANSACTIONS
 				</h2>
-				<button className="text-sm text-[#FFFFE3]/60 hover:text-[#FFFFE3] transition-colors">
+				<button className="border-2 border-[#EAE5DC] px-6 py-2 text-sm rounded-lg hover:bg-[#EAE5DC]/10 hover:scale-105 transition-all duration-300 items-center justify-center gap-2 backdrop-blur-sm">
 					View All
 				</button>
 			</div>
@@ -151,10 +195,12 @@ const TransactionsList = () => {
 									</div>
 									<div>
 										<Link
-											href={generateExplorerUrl(tx)}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="font-medium text-[#FFFFE3] hover:underline"
+											href="#"
+											onClick={(e) => {
+												e.preventDefault();
+												handleTransactionClick(tx);
+											}}
+											className="font-medium text-[#FFFFE3] hover:underline cursor-pointer"
 										>
 											{tx.type}
 										</Link>
@@ -167,9 +213,21 @@ const TransactionsList = () => {
 								</div>
 								<div className="text-right">
 									<p
-										className={`font-medium ${tx.type === 'Deposit' ? 'text-green-400' : 'text-red-400'} font-mono`}
+										className={`font-medium ${
+											tx.type === 'Deposit' ||
+											tx.type === 'Sell BTC' ||
+											tx.type === 'Close Investment' ||
+											tx.type === 'Receive'
+												? 'text-green-400'
+												: 'text-red-400'
+										} font-mono`}
 									>
-										{tx.type === 'Deposit' ? '+' : '-'}
+										{tx.type === 'Deposit' ||
+										tx.type === 'Sell BTC' ||
+										tx.type === 'Close Investment' ||
+										tx.type === 'Receive'
+											? '+'
+											: '-'}
 										{tx.amount.toFixed(2)} USD
 									</p>
 									<p className="text-sm text-[#FFFFE3]/60 font-mono">
@@ -180,6 +238,14 @@ const TransactionsList = () => {
 						))
 					)}
 				</div>
+			)}
+
+			{showTransactionDetails && selectedTxDetails && (
+				<TransactionDetailsModal
+					isOpen={showTransactionDetails}
+					onClose={() => setShowTransactionDetails(false)}
+					txDetails={selectedTxDetails}
+				/>
 			)}
 		</motion.section>
 	);
