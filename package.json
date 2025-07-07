@@ -12,6 +12,7 @@
 		"@heroicons/react": "^2.2.0",
 		"@supabase/supabase-js": "^2.49.4",
 		"axios": "^1.8.4",
+		"cavos-service-sdk": "^1.1.17",
 		"framer-motion": "^12.11.0",
 		"jotai": "^2.12.4",
 		"lucide-react": "^0.503.0",
