@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import Image from 'next/image';
 import axios from 'axios';
 import Header from './components/Header';
+import { CavosAuth } from 'cavos-service-sdk';
 
 export default function Home() {
 	const [email, setEmail] = useState('');
