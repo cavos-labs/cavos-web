@@ -5,7 +5,7 @@ export async function POST(req: Request) {
 	try {
 		const { wallet } = await req.json();
 		const response = await axios.post(
-			process.env.WALLET_PROVIDER_API + 'vesu/positions',
+			process.env.CAVOS_CORE_API + 'v1/vesu/position/usd/create',
 			{
 				address: wallet.address,
 				pool: 'Re7 USDC',

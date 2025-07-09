@@ -5,7 +5,7 @@ export async function POST(req: Request) {
 	try {
 		const { amount, wallet, recipientAddress } = await req.json();
 		const response = await axios.post(
-			process.env.WALLET_PROVIDER_API + 'wallet/send',
+			process.env.CAVOS_CORE_API + 'v1/wallet/usd/send',
 			{
 				amount: amount,
 				address: wallet.address,

@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 export async function POST(req: Request) {
 	try {
 		const response = await axios.post(
-			process.env.WALLET_PROVIDER_API + 'vesu/pool/apy',
+			process.env.CAVOS_CORE_API + 'v1/vesu/pool/apy',
 			{
 				poolName: 'Re7 USDC',
 				assetSymbol: 'USDC',
