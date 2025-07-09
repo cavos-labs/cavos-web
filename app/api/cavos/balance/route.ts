@@ -10,7 +10,7 @@ export async function POST(req: Request) {
 			{
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `Bearer ${process.env.WALLET_PROVIDER_TOKEN}`,
+					Authorization: `Bearer ${process.env.CAVOS_CORE_TOKEN}`,
 				},
 			}
 		);
