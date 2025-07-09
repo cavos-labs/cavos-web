@@ -1,7 +1,14 @@
 'use client';
 import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Check, CreditCard, Smartphone, Shield, Globe } from 'lucide-react';
+import {
+	ArrowRight,
+	Check,
+	CreditCard,
+	Smartphone,
+	Shield,
+	Globe,
+} from 'lucide-react';
 import Footer from './components/Footer';
 import Image from 'next/image';
 import axios from 'axios';
@@ -80,7 +87,10 @@ export default function Home() {
 								transition={{ duration: 0.8, delay: 0.4 }}
 								className="flex flex-col sm:flex-row gap-4 w-full md:w-auto justify-center md:justify-start"
 							>
-								<button onClick={scrollToWaitlist} className="border-2 border-[#EAE5DC] px-8 py-4 font-bold text-lg rounded-lg hover:bg-[#EAE5DC]/10 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 group">
+								<button
+									onClick={scrollToWaitlist}
+									className="border-2 border-[#EAE5DC] px-8 py-4 font-bold text-lg rounded-lg hover:bg-[#EAE5DC]/10 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 group"
+								>
 									Join now
 									<ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
 								</button>
@@ -181,30 +191,37 @@ export default function Home() {
 									<span className="text-[#EAE5DC] relative inline-block">
 										CAVOS
 										<span className="absolute inset-x-0 -bottom-1 h-0.5 bg-[#EAE5DC] transform scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500"></span>
-									</span> CARD
+									</span>{' '}
+									CARD
 								</h2>
 								<p className="text-xl text-[#a0a0a0] mb-8 leading-relaxed">
-									The most exclusive banking card, designed for global citizens.
+									The most exclusive banking card, designed
+									for global citizens.
 								</p>
 								<ul className="space-y-4 mb-10">
 									{[
-										"No foreign transaction fees",
-										"Instant virtual card issuance",
-										"1% cashback on all purchases",
-										"Contactless payments worldwide"
+										'No foreign transaction fees',
+										'Instant virtual card issuance',
+										'1% cashback on all purchases',
+										'Contactless payments worldwide',
 									].map((item, index) => (
 										<motion.li
 											key={index}
 											initial={{ opacity: 0, x: -20 }}
 											whileInView={{ opacity: 1, x: 0 }}
-											transition={{ duration: 0.6, delay: index * 0.1 }}
+											transition={{
+												duration: 0.6,
+												delay: index * 0.1,
+											}}
 											className="flex items-start gap-3 group"
 										>
 											<div className="relative mt-1">
 												<div className="absolute inset-0 bg-[#EAE5DC]/20 rounded-full blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 												<Check className="w-5 h-5 text-[#EAE5DC] flex-shrink-0" />
 											</div>
-											<span className="text-lg group-hover:text-[#EAE5DC]/80 transition-colors duration-300">{item}</span>
+											<span className="text-lg group-hover:text-[#EAE5DC]/80 transition-colors duration-300">
+												{item}
+											</span>
 										</motion.li>
 									))}
 								</ul>
@@ -213,8 +230,11 @@ export default function Home() {
 									whileInView={{ opacity: 1 }}
 									transition={{ duration: 0.6, delay: 0.4 }}
 									onClick={scrollToWaitlist}
-									className="border-2 border-[#EAE5DC] px-8 py-4 text-lg rounded-lg hover:bg-[#EAE5DC]/10 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 backdrop-blur-sm">
-									<span className="relative z-10">Get your card</span>
+									className="border-2 border-[#EAE5DC] px-8 py-4 text-lg rounded-lg hover:bg-[#EAE5DC]/10 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 backdrop-blur-sm"
+								>
+									<span className="relative z-10">
+										Get your card
+									</span>
 								</motion.button>
 							</motion.div>
 
@@ -253,23 +273,29 @@ export default function Home() {
 						<div className="grid md:grid-cols-3 gap-8">
 							{[
 								{
-									title: "Hidden Fees",
-									description: "Traditional banks often charge you for every little thing, eating away at your savings."
+									title: 'Hidden Fees',
+									description:
+										'Traditional banks often charge you for every little thing, eating away at your savings.',
 								},
 								{
-									title: "Slow Transfers",
-									description: "Moving your money can take days, especially across borders or on weekends."
+									title: 'Slow Transfers',
+									description:
+										'Moving your money can take days, especially across borders or on weekends.',
 								},
 								{
-									title: "Complex Processes",
-									description: "Opening accounts, sending money, or getting support is often a headache."
-								}
+									title: 'Complex Processes',
+									description:
+										'Opening accounts, sending money, or getting support is often a headache.',
+								},
 							].map((item, index) => (
 								<motion.div
 									key={index}
 									initial={{ opacity: 0, y: 30 }}
 									whileInView={{ opacity: 1, y: 0 }}
-									transition={{ duration: 0.6, delay: index * 0.1 }}
+									transition={{
+										duration: 0.6,
+										delay: index * 0.1,
+									}}
 									className="bg-gradient-to-b from-[#1a1a1a] to-[#151515] rounded-xl p-8 border border-[#EAE5DC]/10 hover:border-[#EAE5DC]/20 transition-all duration-300 group relative overflow-hidden"
 								>
 									<div className="absolute inset-0 bg-[url('/images/grid-pattern.svg')] opacity-5"></div>
@@ -278,7 +304,9 @@ export default function Home() {
 											<span className="w-2 h-2 bg-[#EAE5DC] rounded-full"></span>
 											{item.title}
 										</h3>
-										<p className="text-[#a0a0a0] leading-relaxed">{item.description}</p>
+										<p className="text-[#a0a0a0] leading-relaxed">
+											{item.description}
+										</p>
 									</div>
 								</motion.div>
 							))}
@@ -300,39 +328,58 @@ export default function Home() {
 						<div className="grid md:grid-cols-4 gap-6">
 							{[
 								{
-									icon: <CreditCard className="w-8 h-8 text-[#EAE5DC]" />,
-									title: "Virtual Card",
-									description: "Shop online safely with a card you control."
+									icon: (
+										<CreditCard className="w-8 h-8 text-[#EAE5DC]" />
+									),
+									title: 'Virtual Card',
+									description:
+										'Shop online safely with a card you control.',
 								},
 								{
-									icon: <Smartphone className="w-8 h-8 text-[#EAE5DC]" />,
-									title: "Mobile App",
-									description: "All your finances in your pocket, always."
+									icon: (
+										<Smartphone className="w-8 h-8 text-[#EAE5DC]" />
+									),
+									title: 'Mobile App',
+									description:
+										'All your finances in your pocket, always.',
 								},
 								{
-									icon: <Shield className="w-8 h-8 text-[#EAE5DC]" />,
-									title: "Secure",
-									description: "Your data and money are always protected."
+									icon: (
+										<Shield className="w-8 h-8 text-[#EAE5DC]" />
+									),
+									title: 'Secure',
+									description:
+										'Your data and money are always protected.',
 								},
 								{
-									icon: <Globe className="w-8 h-8 text-[#EAE5DC]" />,
-									title: "Global Access",
-									description: "Use Cavos wherever you are, no borders."
-								}
+									icon: (
+										<Globe className="w-8 h-8 text-[#EAE5DC]" />
+									),
+									title: 'Global Access',
+									description:
+										'Use Cavos wherever you are, no borders.',
+								},
 							].map((item, index) => (
 								<motion.div
 									key={index}
 									initial={{ opacity: 0, y: 30 }}
 									whileInView={{ opacity: 1, y: 0 }}
-									transition={{ duration: 0.6, delay: index * 0.1 }}
+									transition={{
+										duration: 0.6,
+										delay: index * 0.1,
+									}}
 									className="bg-gradient-to-b from-[#181818] to-[#131313] rounded-xl p-8 border border-[#EAE5DC]/10 flex flex-col items-center hover:border-[#EAE5DC]/20 hover:scale-105 transition-all duration-300 group relative"
 								>
 									<div className="relative mb-6 p-4 bg-[#1a1a1a] rounded-lg group-hover:bg-[#EAE5DC]/10 transition-all duration-300">
 										{item.icon}
 										<div className="absolute inset-0 bg-[#EAE5DC]/20 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 									</div>
-									<p className="font-bold text-xl text-[#EAE5DC] mb-2 text-center">{item.title}</p>
-									<p className="text-[#a0a0a0] text-center leading-relaxed">{item.description}</p>
+									<p className="font-bold text-xl text-[#EAE5DC] mb-2 text-center">
+										{item.title}
+									</p>
+									<p className="text-[#a0a0a0] text-center leading-relaxed">
+										{item.description}
+									</p>
 								</motion.div>
 							))}
 						</div>
@@ -354,33 +401,43 @@ export default function Home() {
 							<div className="absolute top-1/2 left-0 right-0 h-0.5 bg-[#EAE5DC]/10 hidden md:block"></div>
 							{[
 								{
-									step: "1",
-									title: "Sign Up",
-									description: "Create your account in minutes, no paperwork."
+									step: '1',
+									title: 'Sign Up',
+									description:
+										'Create your account in minutes, no paperwork.',
 								},
 								{
-									step: "2",
-									title: "Verify",
-									description: "Quick identity check to keep your account safe."
+									step: '2',
+									title: 'Verify',
+									description:
+										'Quick identity check to keep your account safe.',
 								},
 								{
-									step: "3",
-									title: "Start Using",
-									description: "Enjoy all Cavos features right away."
-								}
+									step: '3',
+									title: 'Start Using',
+									description:
+										'Enjoy all Cavos features right away.',
+								},
 							].map((item, index) => (
 								<motion.div
 									key={index}
 									initial={{ opacity: 0, y: 30 }}
 									whileInView={{ opacity: 1, y: 0 }}
-									transition={{ duration: 0.6, delay: index * 0.1 }}
+									transition={{
+										duration: 0.6,
+										delay: index * 0.1,
+									}}
 									className="bg-gradient-to-b from-[#1a1a1a] to-[#151515] rounded-xl p-8 border border-[#EAE5DC]/10 flex flex-col items-center hover:border-[#EAE5DC]/20 hover:scale-105 transition-all duration-300 group relative z-10"
 								>
 									<div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-[#EAE5DC] rounded-full flex items-center justify-center text-black font-bold">
 										{item.step}
 									</div>
-									<h3 className="font-bold text-xl text-[#EAE5DC] mb-4 mt-4 text-center">{item.title}</h3>
-									<p className="text-[#a0a0a0] text-center leading-relaxed">{item.description}</p>
+									<h3 className="font-bold text-xl text-[#EAE5DC] mb-4 mt-4 text-center">
+										{item.title}
+									</h3>
+									<p className="text-[#a0a0a0] text-center leading-relaxed">
+										{item.description}
+									</p>
 								</motion.div>
 							))}
 						</div>
@@ -401,33 +458,44 @@ export default function Home() {
 						<div className="grid md:grid-cols-3 gap-8">
 							{[
 								{
-									quote: "Cavos made my finances so much easier. Transfers are instant and support is always there.",
-									name: "Ana G.",
-									role: "Freelancer"
+									quote: 'Cavos made my finances so much easier. Transfers are instant and support is always there.',
+									name: 'Ana G.',
+									role: 'Freelancer',
 								},
 								{
-									quote: "I love the Cavos card. No hidden fees and works everywhere I go.",
-									name: "Luis R.",
-									role: "Remote Worker"
+									quote: 'I love the Cavos card. No hidden fees and works everywhere I go.',
+									name: 'Luis R.',
+									role: 'Remote Worker',
 								},
 								{
-									quote: "The app is super easy to use and I can manage everything from my phone.",
-									name: "Sofia M.",
-									role: "Entrepreneur"
-								}
+									quote: 'The app is super easy to use and I can manage everything from my phone.',
+									name: 'Sofia M.',
+									role: 'Entrepreneur',
+								},
 							].map((item, index) => (
 								<motion.div
 									key={index}
 									initial={{ opacity: 0, y: 30 }}
 									whileInView={{ opacity: 1, y: 0 }}
-									transition={{ duration: 0.6, delay: index * 0.1 }}
+									transition={{
+										duration: 0.6,
+										delay: index * 0.1,
+									}}
 									className="bg-gradient-to-b from-[#181818] to-[#131313] rounded-xl p-8 border border-[#EAE5DC]/10 flex flex-col hover:border-[#EAE5DC]/20 hover:scale-105 transition-all duration-300 relative"
 								>
-									<div className="absolute top-6 left-6 text-5xl font-serif text-[#EAE5DC]/10">"</div>
-									<p className="text-[#EAE5DC]/80 mb-6 italic relative z-10 mt-6 leading-relaxed">"{item.quote}"</p>
+									<div className="absolute top-6 left-6 text-5xl font-serif text-[#EAE5DC]/10">
+										"
+									</div>
+									<p className="text-[#EAE5DC]/80 mb-6 italic relative z-10 mt-6 leading-relaxed">
+										"{item.quote}"
+									</p>
 									<div className="mt-auto">
-										<p className="font-bold text-[#EAE5DC]">{item.name}</p>
-										<p className="text-[#a0a0a0] text-sm">{item.role}</p>
+										<p className="font-bold text-[#EAE5DC]">
+											{item.name}
+										</p>
+										<p className="text-[#a0a0a0] text-sm">
+											{item.role}
+										</p>
 									</div>
 								</motion.div>
 							))}
@@ -450,23 +518,26 @@ export default function Home() {
 						<div className="space-y-4">
 							{[
 								{
-									question: "Is Cavos really free?",
-									answer: "Yes! You can use our basic features at no cost. Premium is optional for extra perks."
+									question: 'Is Cavos really free?',
+									answer: 'Yes! You can use our basic features at no cost. Premium is optional for extra perks.',
 								},
 								{
-									question: "How fast are transfers?",
-									answer: "Most transfers are instant, even on weekends and holidays."
+									question: 'How fast are transfers?',
+									answer: 'Most transfers are instant, even on weekends and holidays.',
 								},
 								{
-									question: "Can I use Cavos abroad?",
-									answer: "Absolutely! Cavos works worldwide, so you can manage your money wherever you are."
-								}
+									question: 'Can I use Cavos abroad?',
+									answer: 'Absolutely! Cavos works worldwide, so you can manage your money wherever you are.',
+								},
 							].map((item, index) => (
 								<motion.div
 									key={index}
 									initial={{ opacity: 0, y: 20 }}
 									whileInView={{ opacity: 1, y: 0 }}
-									transition={{ duration: 0.6, delay: index * 0.1 }}
+									transition={{
+										duration: 0.6,
+										delay: index * 0.1,
+									}}
 									className="bg-gradient-to-b from-[#181818] to-[#131313] rounded-xl p-6 border border-[#EAE5DC]/10 hover:border-[#EAE5DC]/20 transition-all duration-300 group"
 								>
 									<div className="flex justify-between items-start">
@@ -478,7 +549,9 @@ export default function Home() {
 											<div className="w-4 h-1 bg-[#EAE5DC] rounded-full ml-[-0.25rem] group-hover:rotate-45 transition-transform duration-300"></div>
 										</div>
 									</div>
-									<p className="text-[#a0a0a0] mt-2 leading-relaxed">{item.answer}</p>
+									<p className="text-[#a0a0a0] mt-2 leading-relaxed">
+										{item.answer}
+									</p>
 								</motion.div>
 							))}
 						</div>
@@ -486,7 +559,10 @@ export default function Home() {
 				</section>
 
 				{/* Enhanced CTA Section */}
-				<section ref={waitlistRef} className="py-32 relative overflow-hidden">
+				<section
+					ref={waitlistRef}
+					className="py-32 relative overflow-hidden"
+				>
 					<div className="container mx-auto px-6 relative z-10">
 						<div className="max-w-3xl mx-auto text-center">
 							<motion.div
@@ -496,7 +572,12 @@ export default function Home() {
 								className="flex justify-center mb-8"
 							>
 								<div className="relative">
-									<Image src="/images/CavosLogo.png" alt="Cavos" width={48} height={48} />
+									<Image
+										src="/images/CavosLogo.png"
+										alt="Cavos"
+										width={48}
+										height={48}
+									/>
 									<div className="absolute inset-0 bg-[#EAE5DC]/30 rounded-full blur-lg scale-150"></div>
 								</div>
 							</motion.div>
@@ -506,13 +587,18 @@ export default function Home() {
 								transition={{ duration: 0.6 }}
 								className="text-5xl font-bold mb-8"
 							>
-								GAIN EARLY ACCESS TO <span className="text-[#EAE5DC] relative inline-block">
+								GAIN EARLY ACCESS TO{' '}
+								<span className="text-[#EAE5DC] relative inline-block">
 									CAVOS
 									<span className="absolute inset-x-0 -bottom-1 h-0.5 bg-[#EAE5DC] transform scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500"></span>
-								</span> NOW
+								</span>{' '}
+								NOW
 							</motion.h2>
 
-							<form onSubmit={handleSubmit} className="max-w-md mx-auto">
+							<form
+								onSubmit={handleSubmit}
+								className="max-w-md mx-auto"
+							>
 								<motion.div
 									initial={{ opacity: 0, y: 20 }}
 									whileInView={{ opacity: 1, y: 0 }}
@@ -524,7 +610,9 @@ export default function Home() {
 										placeholder="Enter your email"
 										className="flex-1 bg-white/5 border-2 border-[#EAE5DC]/20 px-6 py-4 focus:outline-none focus:border-[#EAE5DC] text-lg rounded-lg transition-all duration-300 backdrop-blur-sm hover:bg-white/10"
 										value={email}
-										onChange={(e) => setEmail(e.target.value)}
+										onChange={(e) =>
+											setEmail(e.target.value)
+										}
 										required
 									/>
 									<button
@@ -533,7 +621,11 @@ export default function Home() {
 										className="border-2 border-[#EAE5DC] px-8 py-4 font-bold text-lg rounded-lg hover:bg-[#EAE5DC]/10 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 relative overflow-hidden group"
 									>
 										<span className="relative z-10">
-											{loading ? 'Sending...' : submitted ? 'Thank You!' : 'Join'}
+											{loading
+												? 'Sending...'
+												: submitted
+													? 'Thank You!'
+													: 'Join'}
 										</span>
 										{!submitted && !loading && (
 											<ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />

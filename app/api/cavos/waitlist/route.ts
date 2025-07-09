@@ -11,7 +11,6 @@ export async function POST(req: Request) {
 	try {
 		const { email } = await req.json();
 		const { error } = await supabase.from('waitlist').insert({ email });
-		console.log('error', error);
 		return NextResponse.json({ data: error }, { status: 200 });
 	} catch (error: any) {
 		return NextResponse.json(
