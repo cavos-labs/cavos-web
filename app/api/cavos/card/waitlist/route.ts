@@ -13,7 +13,6 @@ export async function POST(req: Request) {
 		const { error } = await supabase
 			.from('card_waitlist')
 			.insert({ email, country });
-		console.log('error', error);
 		return NextResponse.json({ data: error }, { status: 200 });
 	} catch (error: any) {
 		return NextResponse.json(
